@@ -1,22 +1,44 @@
 package me.jakobkraus.slothlang.architecture;
 
+import java.util.Objects;
+
 public enum InstructionType {
-    ADD(0b00000000, 0),
-    CSI(0b00000001, 1);
+    ADD(0b00000000, "add"),
+    CSI(0b00000001, "csi"),
+    SQR(0b00000011, "sqr"),
+    SUB(0b00000010, "sub");
 
     private final int opcode;
-    private final int argnum;
+    private final String instructionString;
 
-    InstructionType(int opcode, int argnum) {
+    InstructionType(int opcode, String instructionString) {
         this.opcode = opcode;
-        this.argnum = argnum;
-    }
-
-    public int getArgnum() {
-        return argnum;
+        this.instructionString = instructionString;
     }
 
     public int getOpcode() {
-        return opcode;
+        return this.opcode;
+    }
+
+    public String getInstructionString() {
+        return this.instructionString;
+    }
+
+    public static InstructionType getInstructionTypeFromString(String string) {
+        for (InstructionType s : InstructionType.values()) {
+            if (s.getInstructionString().equals(string))
+                return s;
+        }
+        // TODO: Add default or throw Error
+        return ADD;
+    }
+
+    public static InstructionType getInstructionTypeFromOpCode(byte opCode) {
+        for (InstructionType s : InstructionType.values()) {
+            if (s.getOpcode() == opCode)
+                return s;
+        }
+        // TODO: Add default or throw Error
+        return ADD;
     }
 }

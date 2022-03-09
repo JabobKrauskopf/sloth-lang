@@ -1,41 +1,35 @@
 package me.jakobkraus.slothlang.util;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
 
 public class FileHelper {
 
-    public static String readFile(String filepath) {
+    public static String readFile(String filepath) throws IOException {
 
         Path path = Paths.get(filepath);
         StringBuilder buffer = new StringBuilder();
 
-        try (BufferedReader reader = Files.newBufferedReader(path)) {
-            String str;
-            while ((str = reader.readLine()) != null) {
-                buffer.append(str).append("\n");
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
+        BufferedReader reader = Files.newBufferedReader(path);
+        String str;
+        while ((str = reader.readLine()) != null) {
+            buffer.append(str).append("\n");
         }
+
 
         return buffer.toString();
     }
 
-    public static void saveBinary(String filepath, byte[] byteArray) {
-        try {
-            FileOutputStream fos = new FileOutputStream(filepath);
-            fos.write(byteArray);
-            fos.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public static void saveBinary(String filepath, ByteArrayOutputStream byteArray) throws IOException {
+        FileOutputStream fos = new FileOutputStream(filepath);
+        byteArray.writeTo(fos);
+        fos.close();
+    }
+
+    public static byte[] readBinary(String filepath) throws IOException {
+        return Files.readAllBytes(Paths.get(filepath));
     }
 }
+

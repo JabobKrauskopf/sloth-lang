@@ -1,19 +1,21 @@
-package me.jakobkraus.slothlang.assembler.instructions;
+package me.jakobkraus.slothlang.instructions;
 
 import me.jakobkraus.slothlang.architecture.InstructionType;
+import me.jakobkraus.slothlang.stack.Stack;
 
-public class Add implements Instruction {
+public class Sqr implements Instruction {
 
-    private final int opCode = InstructionType.ADD.getOpcode();
-
-    @Override
-    public int getOpCode() {
-        return this.opCode;
-    }
+    private final int opCode = InstructionType.SQR.getOpcode();
 
     @Override
     public byte[] serialize() {
         return new byte[]{(byte) opCode, 0b0, 0b0, 0b0, 0b0};
+    }
+
+    @Override
+    public void execute(Stack stack) {
+        int cache = stack.pop();
+        stack.push(cache * cache);
     }
 
     @Override

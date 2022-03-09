@@ -1,13 +1,16 @@
 package me.jakobkraus.slothlang.assembler;
 
+import me.jakobkraus.slothlang.instructions.InstructionStructure;
 import me.jakobkraus.slothlang.util.FileHelper;
+
+import java.io.IOException;
 
 public class Assembler {
 
     public String code = "";
     private final InstructionStructure struct = new InstructionStructure();
 
-    public void loadFile(String filepath) {
+    public void loadFile(String filepath) throws IOException {
         this.code = FileHelper.readFile(filepath);
     }
 
@@ -16,12 +19,10 @@ public class Assembler {
     }
 
     public void parse() {
-        for (String line : this.code.split("\n")) {
-            this.struct.parseInstruction(line);
-        }
+       this.struct.parse(this.code);
     }
 
-    public void saveSerialization(String filepath) {
+    public void saveSerialization(String filepath) throws IOException {
         this.struct.serialize();
         FileHelper.saveBinary(filepath, this.struct.getSerialization());
     }

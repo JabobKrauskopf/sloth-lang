@@ -1,6 +1,7 @@
-package me.jakobkraus.slothlang.assembler.instructions;
+package me.jakobkraus.slothlang.instructions;
 
 import me.jakobkraus.slothlang.architecture.InstructionType;
+import me.jakobkraus.slothlang.stack.Stack;
 
 public class Csi implements Instruction {
 
@@ -12,11 +13,6 @@ public class Csi implements Instruction {
     }
 
     @Override
-    public int getOpCode() {
-        return this.opCode;
-    }
-
-    @Override
     public byte[] serialize() {
         return new byte[]{(byte) opCode,
                 (byte) (0xFF & (this.constant >> 24)),
@@ -24,6 +20,11 @@ public class Csi implements Instruction {
                 (byte) (0xFF & (this.constant >> 8)),
                 (byte) (0xFF & this.constant)
         };
+    }
+
+    @Override
+    public void execute(Stack stack) {
+        stack.push(this.constant);
     }
 
     @Override
