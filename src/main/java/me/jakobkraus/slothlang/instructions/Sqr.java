@@ -3,13 +3,17 @@ package me.jakobkraus.slothlang.instructions;
 import me.jakobkraus.slothlang.architecture.InstructionType;
 import me.jakobkraus.slothlang.stack.Stack;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
+
 public class Sqr implements Instruction {
 
-    private final int opCode = InstructionType.SQR.getOpcode();
+    private final int opCode = InstructionType.SQR.getOpCode();
 
     @Override
-    public byte[] serialize() {
-        return new byte[]{(byte) opCode, 0b0, 0b0, 0b0, 0b0};
+    public void serialize(DataOutputStream outputStream) throws IOException {
+        outputStream.write(opCode);
+        outputStream.write(new byte[] {0b0, 0b0, 0b0, 0b0});
     }
 
     @Override

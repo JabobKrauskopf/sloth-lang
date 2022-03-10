@@ -1,9 +1,10 @@
 package me.jakobkraus.slothlang.instructions;
 
 import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import me.jakobkraus.slothlang.architecture.InstructionType;
@@ -11,7 +12,6 @@ import me.jakobkraus.slothlang.stack.Stack;
 
 public class InstructionStructure {
     private final List<Instruction> instructions = new ArrayList<>();
-    private final ByteArrayOutputStream serialization = new ByteArrayOutputStream();
 
     public void parseInstruction(String instruction) {
         String[] instructionSplit = instruction.split(" ");
@@ -31,17 +31,13 @@ public class InstructionStructure {
         }
     }
 
-    public void parseInstruction(byte[] byteInstruction) {
-        switch (InstructionType.getInstructionTypeFromOpCode(byteInstruction[0])) {
+    public void parseInstruction(byte opCode, int args) {
+        switch (InstructionType.getInstructionTypeFromOpCode(opCode)) {
             case ADD:
                 this.instructions.add(new Add());
                 break;
             case CSI:
-                long arg = ((byteInstruction[4] & 0xFF)) |
-                        ((byteInstruction[3] & 0xFF) << 8) |
-                        ((byteInstruction[2] & 0xFF) << 16) |
-                        ((long) (byteInstruction[1] & 0xFF) << 24);
-                this.instructions.add(new Csi((int) arg));
+                this.instructions.add(new Csi(args));
                 break;
             case SUB:
                 this.instructions.add(new Sub());
@@ -58,19 +54,18 @@ public class InstructionStructure {
         }
     }
 
-    public void serialize() {
+    public void serialize(DataOutputStream outputStream) throws IOException {
         for (Instruction s : this.instructions) {
-            for (byte b : s.serialize()) {
-                this.serialization.write(b);
-            }
+            s.serialize(outputStream);
         }
     }
 
-    public void deserialize() {
+    public void deserialize(DataInputStream inputStream) throws IOException {
         this.instructions.clear();
-        byte[] byteInstructions = this.serialization.toByteArray();
-        for (int i = 0; i < (byteInstructions.length / 5); i++) {
-            this.parseInstruction(Arrays.copyOfRange(byteInstructions, (i * 5), (i * 5) + 5));
+        while (inputStream.available() != 0) {
+            byte opCode = inputStream.readByte();
+            int args = inputStream.readInt();
+            this.parseInstruction(opCode, args);
         }
     }
 
@@ -78,15 +73,6 @@ public class InstructionStructure {
         for (Instruction s : this.instructions) {
             s.print();
         }
-    }
-
-    public ByteArrayOutputStream getSerialization() {
-        return this.serialization;
-    }
-
-    public void setSerialization(byte[] serialization) throws IOException {
-        this.serialization.reset();
-        this.serialization.write(serialization);
     }
 
     public void runAll(Stack stack) {

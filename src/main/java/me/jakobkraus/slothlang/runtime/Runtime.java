@@ -4,6 +4,8 @@ import me.jakobkraus.slothlang.instructions.InstructionStructure;
 import me.jakobkraus.slothlang.stack.Stack;
 import me.jakobkraus.slothlang.util.FileHelper;
 
+import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
 import java.io.IOException;
 
 public class Runtime {
@@ -16,8 +18,9 @@ public class Runtime {
     }
 
     public void deserialize() throws IOException {
-        this.struct.setSerialization(this.code);
-        this.struct.deserialize();
+        ByteArrayInputStream serialization = new ByteArrayInputStream(this.code);
+        DataInputStream inputStream = new DataInputStream(serialization);
+        this.struct.deserialize(inputStream);
     }
 
     public void printInstructions() {

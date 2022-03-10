@@ -3,9 +3,12 @@ package me.jakobkraus.slothlang.instructions;
 import me.jakobkraus.slothlang.architecture.InstructionType;
 import me.jakobkraus.slothlang.stack.Stack;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
+
 public class Csi implements Instruction {
 
-    private final int opCode = InstructionType.CSI.getOpcode();
+    private final int opCode = InstructionType.CSI.getOpCode();
     private final int constant;
 
     public Csi(int constant) {
@@ -13,13 +16,13 @@ public class Csi implements Instruction {
     }
 
     @Override
-    public byte[] serialize() {
-        return new byte[]{(byte) opCode,
-                (byte) (0xFF & (this.constant >> 24)),
+    public void serialize(DataOutputStream outputStream) throws IOException {
+        outputStream.write(opCode);
+        outputStream.write(new byte[]{(byte) (0xFF & (this.constant >> 24)),
                 (byte) (0xFF & (this.constant >> 16)),
                 (byte) (0xFF & (this.constant >> 8)),
                 (byte) (0xFF & this.constant)
-        };
+        });
     }
 
     @Override

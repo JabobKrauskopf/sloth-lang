@@ -2,9 +2,12 @@ package me.jakobkraus.slothlang.instructions;
 
 import me.jakobkraus.slothlang.stack.Stack;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
+
 public interface Instruction {
 
-    byte[] serialize();
+    void serialize(DataOutputStream outputStream) throws IOException;
 
     void execute(Stack stack);
 

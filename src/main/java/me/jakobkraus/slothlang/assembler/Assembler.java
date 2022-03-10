@@ -3,6 +3,8 @@ package me.jakobkraus.slothlang.assembler;
 import me.jakobkraus.slothlang.instructions.InstructionStructure;
 import me.jakobkraus.slothlang.util.FileHelper;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 
 public class Assembler {
@@ -23,8 +25,11 @@ public class Assembler {
     }
 
     public void saveSerialization(String filepath) throws IOException {
-        this.struct.serialize();
-        FileHelper.saveBinary(filepath, this.struct.getSerialization());
+        ByteArrayOutputStream serialization = new ByteArrayOutputStream();
+        DataOutputStream outputStream = new DataOutputStream(serialization);
+
+        this.struct.serialize(outputStream);
+        FileHelper.saveBinary(filepath, serialization);
     }
 
     public void printInstructions() {
