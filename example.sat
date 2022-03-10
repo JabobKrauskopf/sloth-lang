@@ -5,3 +5,5 @@ csi 2147483647
 sub
 csi 2
 sqr
+csi 4
+eq

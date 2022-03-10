@@ -8,12 +8,12 @@ import java.io.IOException;
 
 public class Sqr implements Instruction {
 
-    private final int opCode = InstructionType.SQR.getOpCode();
+    private final byte opCode = InstructionType.SQR.getOpCode();
 
     @Override
     public void serialize(DataOutputStream outputStream) throws IOException {
-        outputStream.write(opCode);
-        outputStream.write(new byte[] {0b0, 0b0, 0b0, 0b0});
+        outputStream.writeByte(opCode);
+        outputStream.writeInt(0);
     }
 
     @Override

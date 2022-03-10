@@ -8,18 +8,19 @@ import java.io.IOException;
 
 public class Sub implements Instruction {
 
-    private final int opCode = InstructionType.SUB.getOpCode();
+    private final byte opCode = InstructionType.SUB.getOpCode();
 
     @Override
     public void serialize(DataOutputStream outputStream) throws IOException {
-        outputStream.write(opCode);
-        outputStream.write(new byte[] {0b0, 0b0, 0b0, 0b0});
+        outputStream.writeByte(opCode);
+        outputStream.writeInt(0);
     }
 
     @Override
     public void execute(Stack stack) {
-        int[] cache = stack.pop(2);
-        stack.push(cache[0] - cache[1]);
+        int a = stack.pop();
+        int b = stack.pop();
+        stack.push(b - a);
     }
 
     @Override

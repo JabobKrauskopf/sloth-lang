@@ -5,33 +5,27 @@ import me.jakobkraus.slothlang.stack.Stack;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.function.Consumer;
 
-public class Csi implements Instruction {
+public class Eq implements Instruction {
 
-    private final byte opCode = InstructionType.CSI.getOpCode();
-    private final int constant;
-
-    public Csi(int constant) {
-        this.constant = constant;
-    }
+    private final byte opCode = InstructionType.EQ.getOpCode();
 
     @Override
     public void serialize(DataOutputStream outputStream) throws IOException {
         outputStream.writeByte(opCode);
-        outputStream.writeInt(constant);
+        outputStream.writeInt(0);
     }
 
     @Override
     public void execute(Stack stack) {
-        stack.push(this.constant);
+        stack.push(stack.pop() == stack.pop() ? 1 : 0);
     }
 
     @Override
     public void print() {
-        System.out.println(this.opCode + " " + this.constant + " | "
+        System.out.println(this.opCode + " " + 0 + " | "
                 + String.format("%8s", Integer.toBinaryString(this.opCode)).replace(' ', '0') + " "
-                + String.format("%32s", Integer.toBinaryString(this.constant)).replace(' ', '0')
+                + String.format("%32s", Integer.toBinaryString(0)).replace(' ', '0')
         );
     }
 }

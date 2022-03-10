@@ -11,14 +11,6 @@ public class Stack {
         return this.stack.remove(stack.size() - 1);
     }
 
-    public int[] pop(int n) {
-        int[] returnArray = new int[n];
-        for (int i = 0; i < n; i++) {
-            returnArray[n - 1 - i] = this.pop();
-        }
-        return returnArray;
-    }
-
     public void push(int n) {
         this.stack.add(n);
     }

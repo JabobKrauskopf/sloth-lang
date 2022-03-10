@@ -1,6 +1,5 @@
 package me.jakobkraus.slothlang.instructions;
 
-import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -13,26 +12,8 @@ import me.jakobkraus.slothlang.stack.Stack;
 public class InstructionStructure {
     private final List<Instruction> instructions = new ArrayList<>();
 
-    public void parseInstruction(String instruction) {
-        String[] instructionSplit = instruction.split(" ");
-        switch (InstructionType.getInstructionTypeFromString(instructionSplit[0])) {
-            case ADD:
-                this.instructions.add(new Add());
-                break;
-            case CSI:
-                this.instructions.add(new Csi(Integer.parseInt(instructionSplit[1])));
-                break;
-            case SUB:
-                this.instructions.add(new Sub());
-                break;
-            case SQR:
-                this.instructions.add(new Sqr());
-                break;
-        }
-    }
-
-    public void parseInstruction(byte opCode, int args) {
-        switch (InstructionType.getInstructionTypeFromOpCode(opCode)) {
+    public void addInstruction(InstructionType instructionType, int args) {
+        switch (instructionType) {
             case ADD:
                 this.instructions.add(new Add());
                 break;
@@ -42,10 +23,28 @@ public class InstructionStructure {
             case SUB:
                 this.instructions.add(new Sub());
                 break;
+            case EQ:
+                this.instructions.add(new Eq());
+                break;
             case SQR:
                 this.instructions.add(new Sqr());
                 break;
         }
+    }
+
+    public void parseInstruction(String instruction) {
+        String[] instructionSplit = instruction.split(" ");
+        addInstruction(
+                InstructionType.getInstructionTypeFromString(instructionSplit[0]),
+                instructionSplit.length > 1 ? Integer.parseInt(instructionSplit[1]) : 0
+        );
+    }
+
+    public void parseInstruction(byte opCode, int args) {
+        addInstruction(
+                InstructionType.getInstructionTypeFromOpCode(opCode),
+                args
+        );
     }
 
     public void parse(String instructions) {
