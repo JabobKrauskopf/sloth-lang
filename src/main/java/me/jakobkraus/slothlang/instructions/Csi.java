@@ -1,6 +1,7 @@
 package me.jakobkraus.slothlang.instructions;
 
 import me.jakobkraus.slothlang.architecture.InstructionType;
+import me.jakobkraus.slothlang.runtime.InstructionPointer;
 import me.jakobkraus.slothlang.stack.Stack;
 
 import java.io.DataOutputStream;
@@ -23,8 +24,9 @@ public class Csi implements Instruction {
     }
 
     @Override
-    public void execute(Stack stack) {
+    public void execute(Stack stack, InstructionPointer instructionPointer) {
         stack.push(this.constant);
+        instructionPointer.increment();
     }
 
     @Override

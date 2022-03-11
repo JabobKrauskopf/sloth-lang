@@ -1,6 +1,7 @@
 package me.jakobkraus.slothlang.instructions;
 
 import me.jakobkraus.slothlang.architecture.InstructionType;
+import me.jakobkraus.slothlang.runtime.InstructionPointer;
 import me.jakobkraus.slothlang.stack.Stack;
 
 import java.io.DataOutputStream;
@@ -17,9 +18,10 @@ public class Sqr implements Instruction {
     }
 
     @Override
-    public void execute(Stack stack) {
+    public void execute(Stack stack, InstructionPointer instructionPointer) {
         int cache = stack.pop();
         stack.push(cache * cache);
+        instructionPointer.increment();
     }
 
     @Override

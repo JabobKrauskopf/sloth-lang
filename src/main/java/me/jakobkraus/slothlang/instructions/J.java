@@ -7,29 +7,31 @@ import me.jakobkraus.slothlang.stack.Stack;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-public class Sub implements Instruction {
+public class J implements Instruction {
 
-    private final byte opCode = InstructionType.SUB.getOpCode();
+    private final byte opCode = InstructionType.J.getOpCode();
+    private final int address;
+
+    public J(int address) {
+        this.address = address;
+    }
 
     @Override
     public void serialize(DataOutputStream outputStream) throws IOException {
         outputStream.writeByte(opCode);
-        outputStream.writeInt(0);
+        outputStream.writeInt(this.address);
     }
 
     @Override
     public void execute(Stack stack, InstructionPointer instructionPointer) {
-        int a = stack.pop();
-        int b = stack.pop();
-        stack.push(b - a);
-        instructionPointer.increment();
+        instructionPointer.setInstructionPointer(this.address);
     }
 
     @Override
     public void print() {
-        System.out.println(this.opCode + " " + 0 + " | "
+        System.out.println(this.opCode + " " + this.address + " | "
                 + String.format("%8s", Integer.toBinaryString(this.opCode)).replace(' ', '0') + " "
-                + String.format("%32s", Integer.toBinaryString(0)).replace(' ', '0')
+                + String.format("%32s", Integer.toBinaryString(this.address)).replace(' ', '0')
         );
     }
 }

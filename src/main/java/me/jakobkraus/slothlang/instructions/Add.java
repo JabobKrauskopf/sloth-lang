@@ -1,6 +1,7 @@
 package me.jakobkraus.slothlang.instructions;
 
 import me.jakobkraus.slothlang.architecture.InstructionType;
+import me.jakobkraus.slothlang.runtime.InstructionPointer;
 import me.jakobkraus.slothlang.stack.Stack;
 
 import java.io.DataOutputStream;
@@ -17,8 +18,9 @@ public class Add implements Instruction {
     }
 
     @Override
-    public void execute(Stack stack) {
+    public void execute(Stack stack, InstructionPointer instructionPointer) {
         stack.push(stack.pop() + stack.pop());
+        instructionPointer.increment();
     }
 
     @Override

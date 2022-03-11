@@ -1,9 +1,12 @@
-csi 311
-csi 311
-add
-csi 2147483647
-sub
 csi 2
 sqr
 csi 4
-eq
+je if
+j else
+if:
+csi 0
+j end
+else:
+csi 1
+end:
+csi 15

@@ -11,6 +11,7 @@ import java.io.IOException;
 public class Runtime {
     byte[] code;
     private final InstructionStructure struct = new InstructionStructure();
+    private final InstructionPointer instructionPointer = new InstructionPointer();
     private final Stack stack = new Stack();
 
     public void loadFile(String filepath) throws IOException {
@@ -32,10 +33,14 @@ public class Runtime {
     }
 
     public void runAll() {
-        this.struct.runAll(this.stack);
+        this.struct.runAll(this.stack, this.instructionPointer);
     }
 
     public void runNext() {
-        this.struct.runNext(this.stack);
+        this.struct.runNext(this.stack, this.instructionPointer);
+    }
+
+    public InstructionPointer getInstructionPointer() {
+        return this.instructionPointer;
     }
 }

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.jakobkraus.slothlang.architecture.InstructionType;
+import me.jakobkraus.slothlang.runtime.InstructionPointer;
 import me.jakobkraus.slothlang.stack.Stack;
 
 public class InstructionStructure {
@@ -17,17 +18,26 @@ public class InstructionStructure {
             case ADD:
                 this.instructions.add(new Add());
                 break;
-            case CSI:
-                this.instructions.add(new Csi(args));
-                break;
             case SUB:
                 this.instructions.add(new Sub());
                 break;
-            case EQ:
-                this.instructions.add(new Eq());
+            case CSI:
+                this.instructions.add(new Csi(args));
                 break;
             case SQR:
                 this.instructions.add(new Sqr());
+                break;
+            case J:
+                this.instructions.add(new J(args));
+                break;
+            case Je:
+                this.instructions.add(new Je(args));
+                break;
+            case Jne:
+                this.instructions.add(new Jne(args));
+                break;
+            case EQ:
+                this.instructions.add(new Eq());
                 break;
         }
     }
@@ -74,15 +84,16 @@ public class InstructionStructure {
         }
     }
 
-    public void runAll(Stack stack) {
-        while (this.instructions.size() > 0) {
-            this.runNext(stack);
+    public void runAll(Stack stack, InstructionPointer instructionPointer) {
+        while (instructionPointer.getInstructionPointer() < this.instructions.size()) {
+            this.runNext(stack, instructionPointer);
         }
     }
 
-    public void runNext(Stack stack) {
-        if (this.instructions.size() > 0) {
-            this.instructions.remove(0).execute(stack);
+    public void runNext(Stack stack, InstructionPointer instructionPointer) {
+        if (instructionPointer.getInstructionPointer() < this.instructions.size()) {
+            this.instructions.get(instructionPointer.getInstructionPointer())
+                    .execute(stack, instructionPointer);
         }
     }
 }
