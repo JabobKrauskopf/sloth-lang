@@ -19,7 +19,7 @@ public class Sub implements Instruction {
 
     @Override
     public void execute(ExecutionContext context) {
-        Stack stack = context.getStack();
+        Stack stack = context.getInstructionStack();
         int a = stack.pop();
         int b = stack.pop();
         stack.push(b - a);

@@ -20,8 +20,14 @@ public class InstructionStructure {
             case CSI -> this.instructions.add(new Csi(args));
             case SQR -> this.instructions.add(new Sqr());
             case J -> this.instructions.add(new J(args));
-            case Je -> this.instructions.add(new Je(args));
-            case Jne -> this.instructions.add(new Jne(args));
+            case JE -> this.instructions.add(new Je(args));
+            case JNE -> this.instructions.add(new Jne(args));
+            case CALL -> this.instructions.add(new Call(args));
+            case RETURN -> this.instructions.add(new Return());
+            case AND -> this.instructions.add(new And());
+            case OR -> this.instructions.add(new Or());
+            case SLL -> this.instructions.add(new Sll(args));
+            case SRL -> this.instructions.add(new Srl(args));
             case EQ -> this.instructions.add(new Eq());
         }
     }

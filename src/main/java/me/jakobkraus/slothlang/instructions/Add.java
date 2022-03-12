@@ -19,7 +19,7 @@ public class Add implements Instruction {
 
     @Override
     public void execute(ExecutionContext context) {
-        Stack stack = context.getStack();
+        Stack stack = context.getInstructionStack();
         stack.push(stack.pop() + stack.pop());
         context.getInstructionPointer().increment();
     }

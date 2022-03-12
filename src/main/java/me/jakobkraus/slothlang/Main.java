@@ -40,6 +40,6 @@ public class Main {
         }
         runtime.printInstructions();
         runtime.runAll();
-        runtime.printStack();
+        runtime.printInstructionStack();
     }
 }

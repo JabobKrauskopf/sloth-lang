@@ -19,7 +19,7 @@ public class Sqr implements Instruction {
 
     @Override
     public void execute(ExecutionContext context) {
-        Stack stack = context.getStack();
+        Stack stack = context.getInstructionStack();
         int cache = stack.pop();
         stack.push(cache * cache);
         context.getInstructionPointer().increment();

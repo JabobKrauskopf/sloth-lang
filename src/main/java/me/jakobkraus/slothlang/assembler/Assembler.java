@@ -6,8 +6,8 @@ import me.jakobkraus.slothlang.util.FileHelper;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -17,26 +17,40 @@ public class Assembler {
     private final InstructionStructure struct = new InstructionStructure();
 
     public String cleanCode(String code) {
-        Pattern pattern = Pattern.compile("(^[^:]+):");
-        StringBuilder newCode = new StringBuilder();
-        int lineNumber = 0;
-        String[] lines = code.split("\n");
-        List<String> matches = new ArrayList<>();
-        List<Integer> matchesLines = new ArrayList<>();
+        String[] lines = code.replaceAll("\n\n+", "\n").split("\n");
+        StringBuilder cleanCode = new StringBuilder();
 
+        Pattern labelPattern = Pattern.compile("(^[^:\s]+):");
+        Pattern funcPattern = Pattern.compile("^func ([^:]+):");
+        Map<String, Integer> labelMatches = new HashMap<>();
+        Map<String, Integer> funcMatches = new HashMap<>();
+
+        int lineNumber = 0;
         for (String line : lines) {
-            Matcher match = pattern.matcher(line);
-            if (match.matches()) {
-                matches.add(match.group(1));
-                matchesLines.add(lineNumber);
+            Matcher labelMatch = labelPattern.matcher(line);
+            if (labelMatch.matches()) {
+                labelMatches.put(labelMatch.group(1), lineNumber);
                 continue;
             }
+
+            Matcher funcMatch = funcPattern.matcher(line);
+            if (funcMatch.matches()) {
+                funcMatches.put(funcMatch.group(1), lineNumber);
+                continue;
+            }
+
             lineNumber++;
-            newCode.append(line).append("\n");
+            cleanCode.append(line).append("\n");
         }
-        String parsedNewCode = newCode.toString();
-        for (int i = 0; i < matches.size(); i++) {
-            parsedNewCode = parsedNewCode.replaceFirst(matches.get(i), matchesLines.get(i).toString());
+
+        String parsedNewCode = cleanCode.toString();
+
+        for (Map.Entry<String, Integer> entry : labelMatches.entrySet()) {
+            parsedNewCode = parsedNewCode.replaceFirst(entry.getKey(), entry.getValue().toString());
+        }
+
+        for (Map.Entry<String, Integer> entry : funcMatches.entrySet()) {
+            parsedNewCode = parsedNewCode.replaceFirst(entry.getKey(), entry.getValue().toString());
         }
 
         return parsedNewCode;

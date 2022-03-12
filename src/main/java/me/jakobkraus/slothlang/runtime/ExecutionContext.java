@@ -4,16 +4,22 @@ import me.jakobkraus.slothlang.stack.Stack;
 
 public class ExecutionContext {
 
-    private final Stack stack;
+    private final Stack instructionStack;
+    private final Stack callStack;
     private final InstructionPointer instructionPointer;
 
-    public ExecutionContext(Stack stack, InstructionPointer instructionPointer) {
-        this.stack = stack;
+    public ExecutionContext(Stack instructionStack, Stack callStack, InstructionPointer instructionPointer) {
+        this.instructionStack = instructionStack;
+        this.callStack = callStack;
         this.instructionPointer = instructionPointer;
     }
 
-    public Stack getStack() {
-        return this.stack;
+    public Stack getInstructionStack() {
+        return this.instructionStack;
+    }
+
+    public Stack getCallStack() {
+        return this.callStack;
     }
 
     public InstructionPointer getInstructionPointer() {

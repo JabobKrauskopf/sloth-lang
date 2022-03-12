@@ -1,11 +1,11 @@
-csi 2
-sqr
-csi 4
-je if
-j else
-if:
-csi 0
-j end
-else:
+j pass
+test:
+sll 2
+return
+pass:
+
 csi 1
-end:
+csi 2
+call test
+
+

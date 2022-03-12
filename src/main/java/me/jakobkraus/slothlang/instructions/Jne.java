@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public class Jne implements Instruction {
 
-    private final byte opCode = InstructionType.Jne.getOpCode();
+    private final byte opCode = InstructionType.JNE.getOpCode();
     private final int address;
 
     public Jne(int address) {
@@ -24,7 +24,7 @@ public class Jne implements Instruction {
 
     @Override
     public void execute(ExecutionContext context) {
-        Stack stack = context.getStack();
+        Stack stack = context.getInstructionStack();
         if (stack.pop() != stack.pop()) {
             context.getInstructionPointer().setInstructionPointer(this.address);
         } else {

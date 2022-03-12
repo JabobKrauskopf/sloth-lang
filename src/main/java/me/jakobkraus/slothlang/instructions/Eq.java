@@ -19,7 +19,7 @@ public class Eq implements Instruction {
 
     @Override
     public void execute(ExecutionContext context) {
-        Stack stack = context.getStack();
+        Stack stack = context.getInstructionStack();
         stack.push(stack.pop() == stack.pop() ? 1 : 0);
         context.getInstructionPointer().increment();
     }
