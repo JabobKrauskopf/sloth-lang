@@ -27,6 +27,8 @@ public class Assembler {
 
         int lineNumber = 0;
         for (String line : lines) {
+            if (line.startsWith("//"))
+                continue;
             Matcher labelMatch = labelPattern.matcher(line);
             if (labelMatch.matches()) {
                 labelMatches.put(labelMatch.group(1), lineNumber);
@@ -46,7 +48,10 @@ public class Assembler {
         String parsedNewCode = cleanCode.toString();
 
         for (Map.Entry<String, Integer> entry : labelMatches.entrySet()) {
-            parsedNewCode = parsedNewCode.replaceFirst(entry.getKey(), entry.getValue().toString());
+            parsedNewCode = parsedNewCode.replaceFirst(
+                    "(?<!call\s)" + entry.getKey(),
+                    entry.getValue().toString()
+            );
         }
 
         for (Map.Entry<String, Integer> entry : funcMatches.entrySet()) {
@@ -55,6 +60,8 @@ public class Assembler {
                     "call " + entry.getValue().toString()
             );
         }
+
+        System.out.println(parsedNewCode);
 
         return parsedNewCode;
     }

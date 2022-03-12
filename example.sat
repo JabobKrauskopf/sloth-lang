@@ -1,11 +1,10 @@
+// Test comment
 j pass
-func test:
+func pass:
 xor
 return
 pass:
 
 csi 1
 csi 3
-call test
-
-
+call pass
