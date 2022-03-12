@@ -12,8 +12,9 @@ public enum InstructionType {
     RETURN((byte) 0b00001000, "return"),
     AND((byte) 0b00010000, "and"),
     OR((byte) 0b00010001, "or"),
-    SLL((byte) 0b00010010, "sll"),
-    SRL((byte) 0b00010011, "srl"),
+    XOR((byte) 0b00010010, "xor"),
+    SLL((byte) 0b00010011, "sll"),
+    SRL((byte) 0b00010100, "srl"),
     EQ((byte) 0b10000000, "eq");
 
     private final byte opCode;

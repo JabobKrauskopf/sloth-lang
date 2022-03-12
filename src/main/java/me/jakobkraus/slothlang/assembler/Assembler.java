@@ -50,7 +50,10 @@ public class Assembler {
         }
 
         for (Map.Entry<String, Integer> entry : funcMatches.entrySet()) {
-            parsedNewCode = parsedNewCode.replaceFirst(entry.getKey(), entry.getValue().toString());
+            parsedNewCode = parsedNewCode.replaceFirst(
+                    "call " + entry.getKey(),
+                    "call " + entry.getValue().toString()
+            );
         }
 
         return parsedNewCode;

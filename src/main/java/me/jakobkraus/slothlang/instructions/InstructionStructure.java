@@ -26,6 +26,7 @@ public class InstructionStructure {
             case RETURN -> this.instructions.add(new Return());
             case AND -> this.instructions.add(new And());
             case OR -> this.instructions.add(new Or());
+            case XOR -> this.instructions.add(new Xor());
             case SLL -> this.instructions.add(new Sll(args));
             case SRL -> this.instructions.add(new Srl(args));
             case EQ -> this.instructions.add(new Eq());

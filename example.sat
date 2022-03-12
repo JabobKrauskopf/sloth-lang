@@ -1,11 +1,11 @@
 j pass
-test:
-sll 2
+func test:
+xor
 return
 pass:
 
 csi 1
-csi 2
+csi 3
 call test
 
 
