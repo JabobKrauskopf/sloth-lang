@@ -34,6 +34,7 @@ public class InstructionStructure {
             case DROP -> this.instructions.add(new Drop());
             case SWAP -> this.instructions.add(new Swap());
             case ROT -> this.instructions.add(new Rot(args));
+            case TUCK -> this.instructions.add(new Tuck(args));
         }
     }
 

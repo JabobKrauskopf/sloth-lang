@@ -41,16 +41,5 @@ public class Main {
         runtime.printInstructions();
         runtime.runAll();
         runtime.printInstructionStack();
-//        runtime.printInstructionPointer();
-//        runtime.struct.instructions.get(0).print();
-//        System.out.println();
-//        runtime.runNext();
-//        runtime.printInstructionStack();
-//        runtime.printInstructionPointer();
-//        runtime.struct.instructions.get(21).print();
-//        System.out.println();
-//        runtime.runNext();
-//        runtime.printInstructionStack();
-//        runtime.printInstructionPointer();
     }
 }

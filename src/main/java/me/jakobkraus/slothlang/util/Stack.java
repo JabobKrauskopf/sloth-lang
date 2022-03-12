@@ -26,4 +26,8 @@ public class Stack {
             System.out.println("The " + i + "th Element in the stack is " + this.stack.get(i));
         }
     }
+
+    public int getSize() {
+        return this.stack.size();
+    }
 }
