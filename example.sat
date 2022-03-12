@@ -1,10 +1,32 @@
-// Test comment
+// Recursive Fibonacci
 j pass
-func pass:
-xor
-return
+func fib:
+    copy
+    csi 1
+    je if
+    j else
+    if:
+        drop
+        csi 1
+        return
+    else:
+        copy
+        csi 2
+        je if
+
+        copy
+        csi 1
+        sub
+        call fib
+
+        swap
+        csi 2
+        sub
+        call fib
+
+        add
+        return
 pass:
 
-csi 1
-csi 3
-call pass
+csi 11
+call fib

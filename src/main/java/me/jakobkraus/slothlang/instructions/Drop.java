@@ -2,14 +2,13 @@ package me.jakobkraus.slothlang.instructions;
 
 import me.jakobkraus.slothlang.architecture.InstructionType;
 import me.jakobkraus.slothlang.runtime.ExecutionContext;
-import me.jakobkraus.slothlang.util.Stack;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-public class Sqr implements Instruction {
+public class Drop implements Instruction {
 
-    private final byte opCode = InstructionType.SQR.getOpCode();
+    private final byte opCode = InstructionType.DROP.getOpCode();
 
     @Override
     public void serialize(DataOutputStream outputStream) throws IOException {
@@ -19,9 +18,7 @@ public class Sqr implements Instruction {
 
     @Override
     public void execute(ExecutionContext context) {
-        Stack stack = context.getInstructionStack();
-        int cache = stack.pop();
-        stack.push(cache * cache);
+        context.getInstructionStack().pop();
         context.getInstructionPointer().increment();
     }
 

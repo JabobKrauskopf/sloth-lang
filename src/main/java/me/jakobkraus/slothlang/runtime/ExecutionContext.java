@@ -1,6 +1,6 @@
 package me.jakobkraus.slothlang.runtime;
 
-import me.jakobkraus.slothlang.stack.Stack;
+import me.jakobkraus.slothlang.util.Stack;
 
 public class ExecutionContext {
 

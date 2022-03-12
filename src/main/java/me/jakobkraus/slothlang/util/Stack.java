@@ -1,4 +1,4 @@
-package me.jakobkraus.slothlang.stack;
+package me.jakobkraus.slothlang.util;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -13,11 +13,14 @@ import java.util.regex.Pattern;
 
 public class Assembler {
 
-    public String code = "";
     private final InstructionStructure struct = new InstructionStructure();
+    private String code = "";
 
     public String cleanCode(String code) {
-        String[] lines = code.replaceAll("\n\n+", "\n").split("\n");
+        String[] lines = code.
+                replaceAll("\n\n+", "\n").
+                replaceAll("(^|(?<=\n))\s+", "").
+                split("\n");
         StringBuilder cleanCode = new StringBuilder();
 
         Pattern labelPattern = Pattern.compile("(^[^:\s]+):");
@@ -48,14 +51,14 @@ public class Assembler {
         String parsedNewCode = cleanCode.toString();
 
         for (Map.Entry<String, Integer> entry : labelMatches.entrySet()) {
-            parsedNewCode = parsedNewCode.replaceFirst(
+            parsedNewCode = parsedNewCode.replaceAll(
                     "(?<!call\s)" + entry.getKey(),
                     entry.getValue().toString()
             );
         }
 
         for (Map.Entry<String, Integer> entry : funcMatches.entrySet()) {
-            parsedNewCode = parsedNewCode.replaceFirst(
+            parsedNewCode = parsedNewCode.replaceAll(
                     "call " + entry.getKey(),
                     "call " + entry.getValue().toString()
             );

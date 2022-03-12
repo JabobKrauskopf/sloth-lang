@@ -2,7 +2,7 @@ package me.jakobkraus.slothlang.instructions;
 
 import me.jakobkraus.slothlang.architecture.InstructionType;
 import me.jakobkraus.slothlang.runtime.ExecutionContext;
-import me.jakobkraus.slothlang.stack.Stack;
+import me.jakobkraus.slothlang.util.Stack;
 
 import java.io.DataOutputStream;
 import java.io.IOException;

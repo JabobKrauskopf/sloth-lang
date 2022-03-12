@@ -1,23 +1,23 @@
 package me.jakobkraus.slothlang.instructions;
 
+import me.jakobkraus.slothlang.architecture.InstructionType;
+import me.jakobkraus.slothlang.runtime.ExecutionContext;
+import me.jakobkraus.slothlang.runtime.InstructionPointer;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.jakobkraus.slothlang.architecture.InstructionType;
-import me.jakobkraus.slothlang.runtime.ExecutionContext;
-import me.jakobkraus.slothlang.runtime.InstructionPointer;
-
 public class InstructionStructure {
     private final List<Instruction> instructions = new ArrayList<>();
 
     public void addInstruction(InstructionType instructionType, int args) {
         switch (instructionType) {
+            case CSI -> this.instructions.add(new Csi(args));
             case ADD -> this.instructions.add(new Add());
             case SUB -> this.instructions.add(new Sub());
-            case CSI -> this.instructions.add(new Csi(args));
             case SQR -> this.instructions.add(new Sqr());
             case J -> this.instructions.add(new J(args));
             case JE -> this.instructions.add(new Je(args));
@@ -30,6 +30,10 @@ public class InstructionStructure {
             case SLL -> this.instructions.add(new Sll(args));
             case SRL -> this.instructions.add(new Srl(args));
             case EQ -> this.instructions.add(new Eq());
+            case COPY -> this.instructions.add(new Copy());
+            case DROP -> this.instructions.add(new Drop());
+            case SWAP -> this.instructions.add(new Swap());
+            case ROT -> this.instructions.add(new Rot(args));
         }
     }
 

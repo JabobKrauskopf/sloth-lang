@@ -7,9 +7,9 @@ import me.jakobkraus.slothlang.util.Stack;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-public class Sqr implements Instruction {
+public class Swap implements Instruction {
 
-    private final byte opCode = InstructionType.SQR.getOpCode();
+    private final byte opCode = InstructionType.SWAP.getOpCode();
 
     @Override
     public void serialize(DataOutputStream outputStream) throws IOException {
@@ -20,8 +20,10 @@ public class Sqr implements Instruction {
     @Override
     public void execute(ExecutionContext context) {
         Stack stack = context.getInstructionStack();
-        int cache = stack.pop();
-        stack.push(cache * cache);
+        int a = stack.pop();
+        int b = stack.pop();
+        stack.push(a);
+        stack.push(b);
         context.getInstructionPointer().increment();
     }
 

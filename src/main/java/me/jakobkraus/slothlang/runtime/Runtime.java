@@ -1,19 +1,19 @@
 package me.jakobkraus.slothlang.runtime;
 
 import me.jakobkraus.slothlang.instructions.InstructionStructure;
-import me.jakobkraus.slothlang.stack.Stack;
 import me.jakobkraus.slothlang.util.FileHelper;
+import me.jakobkraus.slothlang.util.Stack;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
 
 public class Runtime {
-    byte[] code;
     private final InstructionStructure struct = new InstructionStructure();
     private final Stack instructionStack = new Stack();
     private final Stack callStack = new Stack();
     private final InstructionPointer instructionPointer = new InstructionPointer();
+    private byte[] code;
 
     public void loadFile(String filepath) throws IOException {
         this.code = FileHelper.readBinary(filepath);
@@ -35,6 +35,10 @@ public class Runtime {
 
     public void printCallStack() {
         this.callStack.print();
+    }
+
+    public void printInstructionPointer() {
+        System.out.println(this.instructionPointer.getInstructionPointerValue());
     }
 
     public void runAll() {
