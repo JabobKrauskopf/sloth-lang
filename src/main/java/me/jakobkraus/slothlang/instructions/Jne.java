@@ -1,7 +1,7 @@
 package me.jakobkraus.slothlang.instructions;
 
 import me.jakobkraus.slothlang.architecture.InstructionType;
-import me.jakobkraus.slothlang.runtime.InstructionPointer;
+import me.jakobkraus.slothlang.runtime.ExecutionContext;
 import me.jakobkraus.slothlang.stack.Stack;
 
 import java.io.DataOutputStream;
@@ -23,11 +23,12 @@ public class Jne implements Instruction {
     }
 
     @Override
-    public void execute(Stack stack, InstructionPointer instructionPointer) {
+    public void execute(ExecutionContext context) {
+        Stack stack = context.getStack();
         if (stack.pop() != stack.pop()) {
-            instructionPointer.setInstructionPointer(this.address);
+            context.getInstructionPointer().setInstructionPointer(this.address);
         } else {
-            instructionPointer.increment();
+            context.getInstructionPointer().increment();
         }
     }
 

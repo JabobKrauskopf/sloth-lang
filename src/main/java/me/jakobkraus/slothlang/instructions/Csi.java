@@ -1,12 +1,10 @@
 package me.jakobkraus.slothlang.instructions;
 
 import me.jakobkraus.slothlang.architecture.InstructionType;
-import me.jakobkraus.slothlang.runtime.InstructionPointer;
-import me.jakobkraus.slothlang.stack.Stack;
+import me.jakobkraus.slothlang.runtime.ExecutionContext;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.function.Consumer;
 
 public class Csi implements Instruction {
 
@@ -24,9 +22,9 @@ public class Csi implements Instruction {
     }
 
     @Override
-    public void execute(Stack stack, InstructionPointer instructionPointer) {
-        stack.push(this.constant);
-        instructionPointer.increment();
+    public void execute(ExecutionContext context) {
+        context.getStack().push(this.constant);
+        context.getInstructionPointer().increment();
     }
 
     @Override

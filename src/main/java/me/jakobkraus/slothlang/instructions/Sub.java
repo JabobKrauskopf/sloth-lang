@@ -1,7 +1,7 @@
 package me.jakobkraus.slothlang.instructions;
 
 import me.jakobkraus.slothlang.architecture.InstructionType;
-import me.jakobkraus.slothlang.runtime.InstructionPointer;
+import me.jakobkraus.slothlang.runtime.ExecutionContext;
 import me.jakobkraus.slothlang.stack.Stack;
 
 import java.io.DataOutputStream;
@@ -18,11 +18,12 @@ public class Sub implements Instruction {
     }
 
     @Override
-    public void execute(Stack stack, InstructionPointer instructionPointer) {
+    public void execute(ExecutionContext context) {
+        Stack stack = context.getStack();
         int a = stack.pop();
         int b = stack.pop();
         stack.push(b - a);
-        instructionPointer.increment();
+        context.getInstructionPointer().increment();
     }
 
     @Override

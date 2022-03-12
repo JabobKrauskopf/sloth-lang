@@ -24,7 +24,7 @@ public class InstructionPointer {
         this.instructionPointer = instructionPointer;
     }
 
-    public int getInstructionPointer() {
+    public int getInstructionPointerValue() {
         return this.instructionPointer;
     }
 }

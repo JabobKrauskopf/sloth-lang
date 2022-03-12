@@ -11,8 +11,8 @@ import java.io.IOException;
 public class Runtime {
     byte[] code;
     private final InstructionStructure struct = new InstructionStructure();
-    private final InstructionPointer instructionPointer = new InstructionPointer();
     private final Stack stack = new Stack();
+    private final InstructionPointer instructionPointer = new InstructionPointer();
 
     public void loadFile(String filepath) throws IOException {
         this.code = FileHelper.readBinary(filepath);
@@ -33,14 +33,16 @@ public class Runtime {
     }
 
     public void runAll() {
-        this.struct.runAll(this.stack, this.instructionPointer);
+        this.struct.runAll(new ExecutionContext(this.stack, this.instructionPointer));
+    }
+
+    public void runNext(int n) {
+        for (int i = 0; i < n; i++) {
+            this.runNext();
+        }
     }
 
     public void runNext() {
-        this.struct.runNext(this.stack, this.instructionPointer);
-    }
-
-    public InstructionPointer getInstructionPointer() {
-        return this.instructionPointer;
+        this.struct.runNext(new ExecutionContext(this.stack, this.instructionPointer));
     }
 }

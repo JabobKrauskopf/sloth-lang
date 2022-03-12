@@ -1,8 +1,7 @@
 package me.jakobkraus.slothlang.instructions;
 
 import me.jakobkraus.slothlang.architecture.InstructionType;
-import me.jakobkraus.slothlang.runtime.InstructionPointer;
-import me.jakobkraus.slothlang.stack.Stack;
+import me.jakobkraus.slothlang.runtime.ExecutionContext;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -23,8 +22,8 @@ public class J implements Instruction {
     }
 
     @Override
-    public void execute(Stack stack, InstructionPointer instructionPointer) {
-        instructionPointer.setInstructionPointer(this.address);
+    public void execute(ExecutionContext context) {
+        context.getInstructionPointer().setInstructionPointer(this.address);
     }
 
     @Override

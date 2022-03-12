@@ -9,4 +9,3 @@ j end
 else:
 csi 1
 end:
-csi 15

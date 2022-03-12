@@ -7,38 +7,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.jakobkraus.slothlang.architecture.InstructionType;
+import me.jakobkraus.slothlang.runtime.ExecutionContext;
 import me.jakobkraus.slothlang.runtime.InstructionPointer;
-import me.jakobkraus.slothlang.stack.Stack;
 
 public class InstructionStructure {
     private final List<Instruction> instructions = new ArrayList<>();
 
     public void addInstruction(InstructionType instructionType, int args) {
         switch (instructionType) {
-            case ADD:
-                this.instructions.add(new Add());
-                break;
-            case SUB:
-                this.instructions.add(new Sub());
-                break;
-            case CSI:
-                this.instructions.add(new Csi(args));
-                break;
-            case SQR:
-                this.instructions.add(new Sqr());
-                break;
-            case J:
-                this.instructions.add(new J(args));
-                break;
-            case Je:
-                this.instructions.add(new Je(args));
-                break;
-            case Jne:
-                this.instructions.add(new Jne(args));
-                break;
-            case EQ:
-                this.instructions.add(new Eq());
-                break;
+            case ADD -> this.instructions.add(new Add());
+            case SUB -> this.instructions.add(new Sub());
+            case CSI -> this.instructions.add(new Csi(args));
+            case SQR -> this.instructions.add(new Sqr());
+            case J -> this.instructions.add(new J(args));
+            case Je -> this.instructions.add(new Je(args));
+            case Jne -> this.instructions.add(new Jne(args));
+            case EQ -> this.instructions.add(new Eq());
         }
     }
 
@@ -84,16 +68,17 @@ public class InstructionStructure {
         }
     }
 
-    public void runAll(Stack stack, InstructionPointer instructionPointer) {
-        while (instructionPointer.getInstructionPointer() < this.instructions.size()) {
-            this.runNext(stack, instructionPointer);
+    public void runAll(ExecutionContext context) {
+        while (context.getInstructionPointer().getInstructionPointerValue() < this.instructions.size()) {
+            this.runNext(context);
         }
     }
 
-    public void runNext(Stack stack, InstructionPointer instructionPointer) {
-        if (instructionPointer.getInstructionPointer() < this.instructions.size()) {
-            this.instructions.get(instructionPointer.getInstructionPointer())
-                    .execute(stack, instructionPointer);
+    public void runNext(ExecutionContext context) {
+        InstructionPointer instructionPointer = context.getInstructionPointer();
+        if (instructionPointer.getInstructionPointerValue() < this.instructions.size()) {
+            this.instructions.get(instructionPointer.getInstructionPointerValue())
+                    .execute(context);
         }
     }
 }

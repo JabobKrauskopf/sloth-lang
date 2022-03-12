@@ -8,7 +8,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -52,7 +51,7 @@ public class Assembler {
     }
 
     public void parse() {
-       this.struct.parse(this.code);
+        this.struct.parse(this.code);
     }
 
     public void saveSerialization(String filepath) throws IOException {
