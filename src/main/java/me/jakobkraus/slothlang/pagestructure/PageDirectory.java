@@ -18,15 +18,16 @@ public class PageDirectory {
     }
 
     public int loadWord(int index) {
-        return this.pages[(index & 0xFFC00000) >> 12].loadWord(index);
+        return (this.loadByte(index + 3) << 24) |
+                (this.loadByte(index + 2) << 16) |
+                (this.loadByte(index + 1) << 8) |
+                this.loadByte(index);
     }
 
     public void storeWord(int index, int value) {
-        int parsedIndex = (index & 0xFFC00000) >> 12;
-
-        if (this.pages[parsedIndex] == null)
-            this.pages[parsedIndex] = new PageTable();
-
-        this.pages[parsedIndex].storeWord(index, value);
+        this.storeByte(index + 3, (byte) ((value & 0xFF000000) >> 24));
+        this.storeByte(index + 2, (byte) ((value & 0xFF0000) >> 16));
+        this.storeByte(index + 1, (byte) ((value & 0xFF00) >> 8));
+        this.storeByte(index, (byte) (value & 0xFF));
     }
 }
