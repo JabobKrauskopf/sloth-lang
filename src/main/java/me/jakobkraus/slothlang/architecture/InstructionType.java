@@ -21,7 +21,9 @@ public enum InstructionType {
     DROP((byte) 0b01000010, "drop"),
     SWAP((byte) 0b01000011, "swap"),
     ROT((byte) 0b01000100, "rot"),
-    TUCK((byte) 0b01000101, "tuck");
+    TUCK((byte) 0b01000101, "tuck"),
+    SW((byte) 0b01000110, "sw"),
+    LW((byte) 0b01000111, "lw");
 
     private final byte opCode;
     private final String instructionString;

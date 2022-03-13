@@ -17,10 +17,10 @@ public class Assembler {
     private String code = "";
 
     public String cleanCode(String code) {
-        String[] lines = code.
-                replaceAll("\n\n+", "\n").
-                replaceAll("(^|(?<=\n))\s+", "").
-                split("\n");
+        String[] lines = code
+                .replaceAll("\n\n+", "\n")
+                .replaceAll("(^|(?<=\n))\s+", "")
+                .split("\n");
         StringBuilder cleanCode = new StringBuilder();
 
         Pattern labelPattern = Pattern.compile("(^[^:\s]+):");

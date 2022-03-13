@@ -1,6 +1,7 @@
 package me.jakobkraus.slothlang.runtime;
 
 import me.jakobkraus.slothlang.instructions.InstructionStructure;
+import me.jakobkraus.slothlang.pagestructure.PageDirectory;
 import me.jakobkraus.slothlang.util.FileHelper;
 import me.jakobkraus.slothlang.util.Stack;
 
@@ -13,6 +14,7 @@ public class Runtime {
     private final Stack instructionStack = new Stack();
     private final Stack callStack = new Stack();
     private final InstructionPointer instructionPointer = new InstructionPointer();
+    private final PageDirectory pageDirectory = new PageDirectory();
     private byte[] code;
 
     public void loadFile(String filepath) throws IOException {
@@ -43,7 +45,7 @@ public class Runtime {
 
     public void runAll() {
         this.struct.runAll(
-                new ExecutionContext(this.instructionStack, this.callStack, this.instructionPointer)
+                new ExecutionContext(this.instructionStack, this.callStack, this.instructionPointer, this.pageDirectory)
         );
     }
 
@@ -55,7 +57,7 @@ public class Runtime {
 
     public void runNext() {
         this.struct.runNext(
-                new ExecutionContext(this.instructionStack, this.callStack, this.instructionPointer)
+                new ExecutionContext(this.instructionStack, this.callStack, this.instructionPointer, this.pageDirectory)
         );
     }
 }

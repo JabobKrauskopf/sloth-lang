@@ -7,41 +7,33 @@ import me.jakobkraus.slothlang.util.Stack;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-public class Tuck implements Instruction {
+public class Lw implements Instruction {
 
-    private final byte opCode = InstructionType.TUCK.getOpCode();
-    private final int constant;
+    private final byte opCode = InstructionType.LW.getOpCode();
+    private final int address;
 
-    public Tuck(int constant) {
-        this.constant = constant;
+    public Lw(int address) {
+        this.address = address;
     }
 
     @Override
     public void serialize(DataOutputStream outputStream) throws IOException {
         outputStream.writeByte(opCode);
-        outputStream.writeInt(constant);
+        outputStream.writeInt(this.address);
     }
 
     @Override
     public void execute(ExecutionContext context) {
         Stack stack = context.getInstructionStack();
-        Stack cacheStack = new Stack();
-        for (int i = 0; i < this.constant - 1; i++) {
-            cacheStack.push(stack.pop());
-        }
-        int cache = stack.pop();
-        for (int i = 0; i < this.constant - 1; i++) {
-            stack.push(cacheStack.pop());
-        }
-        stack.push(cache);
+        stack.push(context.getPageDirectory().loadWord(this.address));
         context.getInstructionPointer().increment();
     }
 
     @Override
     public void print() {
-        System.out.println(this.opCode + " " + this.constant + " | "
+        System.out.println(this.opCode + " " + this.address + " | "
                 + String.format("%8s", Integer.toBinaryString(this.opCode)).replace(' ', '0') + " "
-                + String.format("%32s", Integer.toBinaryString(this.constant)).replace(' ', '0')
+                + String.format("%32s", Integer.toBinaryString(this.address)).replace(' ', '0')
         );
     }
 }
