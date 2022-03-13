@@ -30,6 +30,7 @@ public class InstructionStructure {
             case SLL -> this.instructions.add(new Sll(args));
             case SRL -> this.instructions.add(new Srl(args));
             case EQ -> this.instructions.add(new Eq());
+            case EQI -> this.instructions.add(new Eqi(args));
             case COPY -> this.instructions.add(new Copy());
             case DROP -> this.instructions.add(new Drop());
             case SWAP -> this.instructions.add(new Swap());

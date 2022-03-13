@@ -17,13 +17,14 @@ public enum InstructionType {
     SLL((byte) 0b00100011, "sll"),
     SRL((byte) 0b00100100, "srl"),
     EQ((byte) 0b01000000, "eq"),
-    COPY((byte) 0b01000001, "copy"),
-    DROP((byte) 0b01000010, "drop"),
-    SWAP((byte) 0b01000011, "swap"),
-    ROT((byte) 0b01000100, "rot"),
-    TUCK((byte) 0b01000101, "tuck"),
-    SW((byte) 0b01000110, "sw"),
-    LW((byte) 0b01000111, "lw");
+    EQI((byte) 0b01000001, "eqi"),
+    COPY((byte) 0b01001000, "copy"),
+    DROP((byte) 0b01001001, "drop"),
+    SWAP((byte) 0b01001010, "swap"),
+    ROT ((byte) 0b01001011, "rot"),
+    TUCK((byte) 0b01001100, "tuck"),
+    SW  ((byte) 0b01001101, "sw"),
+    LW  ((byte) 0b01001110, "lw");
 
     private final byte opCode;
     private final String instructionString;
