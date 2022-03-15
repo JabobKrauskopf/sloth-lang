@@ -24,6 +24,6 @@ public class Lw {
         InstructionPointer instructionPointer = context.getInstructionPointer();
         int address = context.getCodeStructure().readInt(instructionPointer.getInstructionPointerValue());
         stack.push(context.getPageDirectory().loadWord(address));
-        instructionPointer.increment(1 + InstructionType.LW.getArgLength());
+        instructionPointer.increment(InstructionType.LW.getInstructionLength());
     }
 }

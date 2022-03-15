@@ -16,14 +16,14 @@ public class Sll {
     public static void serialize(SerializationContext context, String args) throws IOException {
         DataOutputStream outputStream = context.getOutputStream();
         outputStream.writeByte(opCode);
-        outputStream.writeInt(Integer.parseInt(args));
+        outputStream.writeByte((byte) Integer.parseInt(args));
     }
 
     public static void execute(ExecutionContext context) {
         Stack stack = context.getInstructionStack();
         InstructionPointer instructionPointer = context.getInstructionPointer();
-        int constant = context.getCodeStructure().readInt(instructionPointer.getInstructionPointerValue());
+        int constant = context.getCodeStructure().readByte(instructionPointer.getInstructionPointerValue());
         stack.push(stack.pop() << constant);
-        context.getInstructionPointer().increment(1 + InstructionType.SLL.getArgLength());
+        context.getInstructionPointer().increment(InstructionType.SLL.getInstructionLength());
     }
 }

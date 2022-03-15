@@ -23,6 +23,6 @@ public class Csi {
         int instructionPointerValue = instructionPointer.getInstructionPointerValue();
 
         context.getInstructionStack().push(context.getCodeStructure().readInt(instructionPointerValue));
-        instructionPointer.increment(1 + InstructionType.CSI.getArgLength());
+        instructionPointer.increment(InstructionType.CSI.getInstructionLength());
     }
 }

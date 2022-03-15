@@ -20,7 +20,7 @@ public class Call {
 
     public static void execute(ExecutionContext context) {
         InstructionPointer instructionPointer = context.getInstructionPointer();
-        context.getCallStack().push(instructionPointer.getInstructionPointerValue() + 1 + InstructionType.CALL.getArgLength());
+        context.getCallStack().push(instructionPointer.getInstructionPointerValue() + InstructionType.CALL.getInstructionLength());
         instructionPointer.setInstructionPointer(context.getCodeStructure().readInt(instructionPointer.getInstructionPointerValue()));
     }
 }

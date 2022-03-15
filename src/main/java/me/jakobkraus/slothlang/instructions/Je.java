@@ -25,7 +25,7 @@ public class Je {
         if (stack.pop() == stack.pop()) {
             instructionPointer.setInstructionPointer(context.getCodeStructure().readInt(instructionPointer.getInstructionPointerValue()));
         } else {
-            instructionPointer.increment(1 + InstructionType.JE.getArgLength());
+            instructionPointer.increment(InstructionType.JE.getInstructionLength());
         }
     }
 }

@@ -25,7 +25,7 @@ public class Jne {
         if (stack.pop() != stack.pop()) {
             instructionPointer.setInstructionPointer(context.getCodeStructure().readInt(instructionPointer.getInstructionPointerValue()));
         } else {
-            instructionPointer.increment(1 + InstructionType.JNE.getArgLength());
+            instructionPointer.increment(InstructionType.JNE.getInstructionLength());
         }
     }
 }

@@ -32,6 +32,6 @@ public class Tuck {
              stack.push(cacheStack.pop());
          }
          stack.push(cache);
-        context.getInstructionPointer().increment(1 + InstructionType.TUCK.getArgLength());
+        context.getInstructionPointer().increment(InstructionType.TUCK.getInstructionLength());
     }
 }

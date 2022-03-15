@@ -22,6 +22,6 @@ public class Sw {
         InstructionPointer instructionPointer = context.getInstructionPointer();
         int address = context.getCodeStructure().readInt(instructionPointer.getInstructionPointerValue());
         context.getPageDirectory().storeWord(address, context.getInstructionStack().pop());
-        context.getInstructionPointer().increment(1 + InstructionType.SW.getArgLength());
+        context.getInstructionPointer().increment(InstructionType.SW.getInstructionLength());
     }
 }

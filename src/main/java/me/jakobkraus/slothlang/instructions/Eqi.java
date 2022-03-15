@@ -24,6 +24,6 @@ public class Eqi {
         InstructionPointer instructionPointer = context.getInstructionPointer();
         int constant = context.getCodeStructure().readInt(instructionPointer.getInstructionPointerValue());
         stack.push(stack.pop() == constant ? 1 : 0);
-        instructionPointer.increment(1 + InstructionType.EQI.getArgLength());
+        instructionPointer.increment(InstructionType.EQI.getInstructionLength());
     }
 }

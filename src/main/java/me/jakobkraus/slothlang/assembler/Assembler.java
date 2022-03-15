@@ -29,23 +29,25 @@ public class Assembler {
         Map<String, Integer> labelMatches = new HashMap<>();
         Map<String, Integer> funcMatches = new HashMap<>();
 
-        int lineNumber = 0;
+        int address = 0;
         for (String line : lines) {
             if (line.startsWith("//"))
                 continue;
             Matcher labelMatch = labelPattern.matcher(line);
             if (labelMatch.matches()) {
-                labelMatches.put(labelMatch.group(1), lineNumber);
+                labelMatches.put(labelMatch.group(1), address);
                 continue;
             }
 
             Matcher funcMatch = funcPattern.matcher(line);
             if (funcMatch.matches()) {
-                funcMatches.put(funcMatch.group(1), lineNumber);
+                funcMatches.put(funcMatch.group(1), address);
                 continue;
             }
 
-            lineNumber++;
+            String[] instructions = line.split(" ", 2);
+            InstructionType instructionType = InstructionType.getInstructionTypeFromString(instructions[0]);
+            address = address + instructionType.getInstructionLength();
             cleanCode.append(line).append("\n");
         }
 
@@ -64,8 +66,6 @@ public class Assembler {
                     "call " + entry.getValue().toString()
             );
         }
-
-        System.out.println(parsedNewCode);
 
         return parsedNewCode;
     }

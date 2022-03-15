@@ -30,6 +30,6 @@ public class Rot {
         for(int j : cache) {
             stack.push(j);
         }
-        instructionPointer.increment(1 + InstructionType.ROT.getArgLength());
+        instructionPointer.increment(InstructionType.ROT.getInstructionLength());
     }
 }
