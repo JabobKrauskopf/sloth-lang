@@ -34,7 +34,7 @@ public class Tuck implements Instruction {
             stack.push(cacheStack.pop());
         }
         stack.push(cache);
-        context.getInstructionPointer().increment();
+        context.getInstructionPointer().increment(1 + InstructionType.TUCK.getArgLength());
     }
 
     @Override

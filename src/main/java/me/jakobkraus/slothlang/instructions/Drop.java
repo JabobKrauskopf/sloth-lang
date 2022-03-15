@@ -13,7 +13,6 @@ public class Drop implements Instruction {
     @Override
     public void serialize(DataOutputStream outputStream) throws IOException {
         outputStream.writeByte(opCode);
-        outputStream.writeInt(0);
     }
 
     @Override

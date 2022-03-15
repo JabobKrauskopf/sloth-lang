@@ -16,8 +16,16 @@ public class InstructionPointer {
         this.instructionPointer++;
     }
 
+    public void increment(int n) {
+        this.instructionPointer = this.instructionPointer + n;
+    }
+
     public void decrement() {
         this.instructionPointer--;
+    }
+
+    public void decrement(int n) {
+        this.instructionPointer = this.instructionPointer - n;
     }
 
     public void setInstructionPointer(int instructionPointer) {

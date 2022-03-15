@@ -26,7 +26,7 @@ public class Sll implements Instruction {
     public void execute(ExecutionContext context) {
         Stack stack = context.getInstructionStack();
         stack.push(stack.pop() << this.constant);
-        context.getInstructionPointer().increment();
+        context.getInstructionPointer().increment(1 + InstructionType.SLL.getArgLength());
     }
 
     @Override

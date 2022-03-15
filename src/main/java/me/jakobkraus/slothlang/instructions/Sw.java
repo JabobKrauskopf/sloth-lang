@@ -24,7 +24,7 @@ public class Sw implements Instruction {
     @Override
     public void execute(ExecutionContext context) {
         context.getPageDirectory().storeWord(this.address, context.getInstructionStack().pop());
-        context.getInstructionPointer().increment();
+        context.getInstructionPointer().increment(1 + InstructionType.SW.getArgLength());
     }
 
     @Override

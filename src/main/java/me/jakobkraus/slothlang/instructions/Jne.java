@@ -28,7 +28,7 @@ public class Jne implements Instruction {
         if (stack.pop() != stack.pop()) {
             context.getInstructionPointer().setInstructionPointer(this.address);
         } else {
-            context.getInstructionPointer().increment();
+            context.getInstructionPointer().increment(1 + InstructionType.JNE.getArgLength());
         }
     }
 

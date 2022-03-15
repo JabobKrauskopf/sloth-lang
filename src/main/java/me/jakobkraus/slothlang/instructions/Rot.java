@@ -32,7 +32,7 @@ public class Rot implements Instruction {
         for (int j : cache) {
             stack.push(j);
         }
-        context.getInstructionPointer().increment();
+        context.getInstructionPointer().increment(1 + InstructionType.ROT.getArgLength());
     }
 
     @Override
