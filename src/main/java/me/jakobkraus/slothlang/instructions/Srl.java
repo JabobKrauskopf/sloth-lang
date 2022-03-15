@@ -13,10 +13,10 @@ public class Srl {
 
     private static final byte opCode = InstructionType.SRL.getOpCode();
 
-    public static void serialize(SerializationContext context, String args) throws IOException {
+    public static void serialize(SerializationContext context) throws IOException {
         DataOutputStream outputStream = context.getOutputStream();
         outputStream.writeByte(opCode);
-        outputStream.writeByte((byte) Integer.parseInt(args));
+        outputStream.writeByte((byte) Integer.parseInt(context.getArgs()));
     }
 
     public static void execute(ExecutionContext context) {

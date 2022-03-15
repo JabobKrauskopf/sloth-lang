@@ -8,7 +8,7 @@ public class ExecutionContext {
     private final Stack callStack;
     private final InstructionPointer instructionPointer;
     private final PageDirectory pageDirectory;
-    private CodeStructure codeStructure;
+    private final CodeStructure codeStructure;
 
     public ExecutionContext(Stack instructionStack, Stack callStack, InstructionPointer instructionPointer, PageDirectory pageDirectory, CodeStructure codeStructure) {
         this.instructionStack = instructionStack;

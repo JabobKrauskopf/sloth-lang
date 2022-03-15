@@ -13,10 +13,10 @@ public class Jne {
 
     private static final byte opCode = InstructionType.JNE.getOpCode();
 
-    public static void serialize(SerializationContext context, String args) throws IOException {
+    public static void serialize(SerializationContext context) throws IOException {
         DataOutputStream outputStream = context.getOutputStream();
         outputStream.writeByte(opCode);
-        outputStream.writeInt(Integer.parseInt(args));
+        outputStream.writeInt(Integer.parseInt(context.getArgs()));
     }
 
     public static void execute(ExecutionContext context) {

@@ -57,30 +57,6 @@ public class Runtime {
                 this.codeStructure.readByte(this.instructionPointer.getInstructionPointerValue())
         );
 
-        switch (instructionType) {
-            case CSI -> Csi.execute(context);
-            case ADD -> Add.execute(context);
-            case SUB -> Sub.execute(context);
-            case SQR -> Sqr.execute(context);
-            case J -> J.execute(context);
-            case JE -> Je.execute(context);
-            case JNE -> Jne.execute(context);
-            case CALL -> Call.execute(context);
-            case RETURN -> Return.execute(context);
-            case AND -> And.execute(context);
-            case OR -> Or.execute(context);
-            case XOR -> Xor.execute(context);
-            case SLL -> Sll.execute(context);
-            case SRL -> Srl.execute(context);
-            case EQ -> Eq.execute(context);
-            case EQI -> Eqi.execute(context);
-            case COPY -> Copy.execute(context);
-            case DROP -> Drop.execute(context);
-            case SWAP -> Swap.execute(context);
-            case ROT -> Rot.execute(context);
-            case TUCK -> Tuck.execute(context);
-            case SW -> Sw.execute(context);
-            case LW -> Lw.execute(context);
-        }
+        instructionType.execute(context);
     }
 }
