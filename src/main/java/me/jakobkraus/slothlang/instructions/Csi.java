@@ -19,15 +19,10 @@ public class Csi {
     }
 
     public static void execute(ExecutionContext context) {
-        byte[] code = context.getCode();
         InstructionPointer instructionPointer = context.getInstructionPointer();
         int instructionPointerValue = instructionPointer.getInstructionPointerValue();
-        int constant = (code[instructionPointerValue + 1] << 24) |
-                (code[instructionPointerValue + 2] << 16) |
-                (code[instructionPointerValue + 3] << 8) |
-                code[instructionPointerValue + 4];
 
-        context.getInstructionStack().push(constant);
+        context.getInstructionStack().push(context.getCodeStructure().readInt(instructionPointerValue));
         instructionPointer.increment(1 + InstructionType.CSI.getArgLength());
     }
 }

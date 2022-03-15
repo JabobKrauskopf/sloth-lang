@@ -2,6 +2,7 @@ package me.jakobkraus.slothlang.instructions;
 
 import me.jakobkraus.slothlang.architecture.InstructionType;
 import me.jakobkraus.slothlang.util.ExecutionContext;
+import me.jakobkraus.slothlang.util.InstructionPointer;
 import me.jakobkraus.slothlang.util.SerializationContext;
 import me.jakobkraus.slothlang.util.Stack;
 
@@ -20,7 +21,9 @@ public class Eqi {
 
     public static void execute(ExecutionContext context) {
         Stack stack = context.getInstructionStack();
-        // stack.push(stack.pop() == this.constant ? 1 : 0);
-        context.getInstructionPointer().increment(1 + InstructionType.EQI.getArgLength());
+        InstructionPointer instructionPointer = context.getInstructionPointer();
+        int constant = context.getCodeStructure().readInt(instructionPointer.getInstructionPointerValue());
+        stack.push(stack.pop() == constant ? 1 : 0);
+        instructionPointer.increment(1 + InstructionType.EQI.getArgLength());
     }
 }

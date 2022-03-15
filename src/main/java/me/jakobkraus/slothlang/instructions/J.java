@@ -2,6 +2,7 @@ package me.jakobkraus.slothlang.instructions;
 
 import me.jakobkraus.slothlang.architecture.InstructionType;
 import me.jakobkraus.slothlang.util.ExecutionContext;
+import me.jakobkraus.slothlang.util.InstructionPointer;
 import me.jakobkraus.slothlang.util.SerializationContext;
 
 import java.io.DataOutputStream;
@@ -18,6 +19,8 @@ public class J {
     }
 
     public static void execute(ExecutionContext context) {
-        // context.getInstructionPointer().setInstructionPointer(this.address);
+        InstructionPointer instructionPointer = context.getInstructionPointer();
+        int constant = context.getCodeStructure().readInt(instructionPointer.getInstructionPointerValue());
+        instructionPointer.setInstructionPointer(constant);
     }
 }

@@ -2,6 +2,7 @@ package me.jakobkraus.slothlang.instructions;
 
 import me.jakobkraus.slothlang.architecture.InstructionType;
 import me.jakobkraus.slothlang.util.ExecutionContext;
+import me.jakobkraus.slothlang.util.InstructionPointer;
 import me.jakobkraus.slothlang.util.SerializationContext;
 import me.jakobkraus.slothlang.util.Stack;
 
@@ -20,7 +21,9 @@ public class Lw {
 
     public static void execute(ExecutionContext context) {
         Stack stack = context.getInstructionStack();
-        // stack.push(context.getPageDirectory().loadWord(this.address));
-        context.getInstructionPointer().increment(1 + InstructionType.LW.getArgLength());
+        InstructionPointer instructionPointer = context.getInstructionPointer();
+        int address = context.getCodeStructure().readInt(instructionPointer.getInstructionPointerValue());
+        stack.push(context.getPageDirectory().loadWord(address));
+        instructionPointer.increment(1 + InstructionType.LW.getArgLength());
     }
 }

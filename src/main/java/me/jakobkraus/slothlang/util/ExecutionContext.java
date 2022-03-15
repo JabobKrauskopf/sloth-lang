@@ -8,14 +8,14 @@ public class ExecutionContext {
     private final Stack callStack;
     private final InstructionPointer instructionPointer;
     private final PageDirectory pageDirectory;
-    private byte[] code;
+    private CodeStructure codeStructure;
 
-    public ExecutionContext(Stack instructionStack, Stack callStack, InstructionPointer instructionPointer, PageDirectory pageDirectory, byte[] code) {
+    public ExecutionContext(Stack instructionStack, Stack callStack, InstructionPointer instructionPointer, PageDirectory pageDirectory, CodeStructure codeStructure) {
         this.instructionStack = instructionStack;
         this.callStack = callStack;
         this.instructionPointer = instructionPointer;
         this.pageDirectory = pageDirectory;
-        this.code = code;
+        this.codeStructure = codeStructure;
     }
 
     public Stack getInstructionStack() {
@@ -34,7 +34,7 @@ public class ExecutionContext {
         return this.pageDirectory;
     }
 
-    public byte[] getCode() {
-        return this.code;
+    public CodeStructure getCodeStructure() {
+        return this.codeStructure;
     }
 }

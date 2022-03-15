@@ -2,6 +2,7 @@ package me.jakobkraus.slothlang.instructions;
 
 import me.jakobkraus.slothlang.architecture.InstructionType;
 import me.jakobkraus.slothlang.util.ExecutionContext;
+import me.jakobkraus.slothlang.util.InstructionPointer;
 import me.jakobkraus.slothlang.util.SerializationContext;
 import me.jakobkraus.slothlang.util.Stack;
 
@@ -21,14 +22,16 @@ public class Tuck {
     public static void execute(ExecutionContext context) {
         Stack stack = context.getInstructionStack();
         Stack cacheStack = new Stack();
-        // for (int i = 0; i < this.constant - 1; i++) {
-        //     cacheStack.push(stack.pop());
-        // }
-        // int cache = stack.pop();
-        // for (int i = 0; i < this.constant - 1; i++) {
-        //     stack.push(cacheStack.pop());
-        // }
-        // stack.push(cache);
+        InstructionPointer instructionPointer = context.getInstructionPointer();
+        int constant = context.getCodeStructure().readInt(instructionPointer.getInstructionPointerValue());
+        for (int i = 0; i < constant - 1; i++) {
+             cacheStack.push(stack.pop());
+         }
+         int cache = stack.pop();
+         for (int i = 0; i < constant - 1; i++) {
+             stack.push(cacheStack.pop());
+         }
+         stack.push(cache);
         context.getInstructionPointer().increment(1 + InstructionType.TUCK.getArgLength());
     }
 }

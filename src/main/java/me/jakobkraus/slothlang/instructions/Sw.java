@@ -2,6 +2,7 @@ package me.jakobkraus.slothlang.instructions;
 
 import me.jakobkraus.slothlang.architecture.InstructionType;
 import me.jakobkraus.slothlang.util.ExecutionContext;
+import me.jakobkraus.slothlang.util.InstructionPointer;
 import me.jakobkraus.slothlang.util.SerializationContext;
 
 import java.io.DataOutputStream;
@@ -18,7 +19,9 @@ public class Sw {
     }
 
     public static void execute(ExecutionContext context) {
-        // context.getPageDirectory().storeWord(this.address, context.getInstructionStack().pop());
+        InstructionPointer instructionPointer = context.getInstructionPointer();
+        int address = context.getCodeStructure().readInt(instructionPointer.getInstructionPointerValue());
+        context.getPageDirectory().storeWord(address, context.getInstructionStack().pop());
         context.getInstructionPointer().increment(1 + InstructionType.SW.getArgLength());
     }
 }
