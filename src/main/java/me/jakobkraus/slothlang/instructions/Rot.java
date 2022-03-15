@@ -1,45 +1,32 @@
 package me.jakobkraus.slothlang.instructions;
 
 import me.jakobkraus.slothlang.architecture.InstructionType;
-import me.jakobkraus.slothlang.runtime.ExecutionContext;
+import me.jakobkraus.slothlang.util.ExecutionContext;
+import me.jakobkraus.slothlang.util.SerializationContext;
 import me.jakobkraus.slothlang.util.Stack;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-public class Rot implements Instruction {
+public class Rot {
 
-    private final byte opCode = InstructionType.ROT.getOpCode();
-    private final int constant;
+    private static final byte opCode = InstructionType.ROT.getOpCode();
 
-    public Rot(int constant) {
-        this.constant = constant;
-    }
-
-    @Override
-    public void serialize(DataOutputStream outputStream) throws IOException {
+    public static void serialize(SerializationContext context, String args) throws IOException {
+        DataOutputStream outputStream = context.getOutputStream();
         outputStream.writeByte(opCode);
-        outputStream.writeInt(constant);
+        outputStream.writeInt(Integer.parseInt(args));
     }
 
-    @Override
-    public void execute(ExecutionContext context) {
-        int[] cache = new int[this.constant];
+    public static void execute(ExecutionContext context) {
+        // int[] cache = new int[this.constant];
         Stack stack = context.getInstructionStack();
-        for (int i = 0; i < cache.length; i++) {
-            cache[i] = stack.pop();
-        }
-        for (int j : cache) {
-            stack.push(j);
-        }
+        // for (int i = 0; i < cache.length; i++) {
+        //    cache[i] = stack.pop();
+        //}
+        //for (int j : cache) {
+        //    stack.push(j);
+        //}
         context.getInstructionPointer().increment(1 + InstructionType.ROT.getArgLength());
-    }
-
-    @Override
-    public void print() {
-        System.out.println(this.opCode + " " + this.constant + " | "
-                + String.format("%8s", Integer.toBinaryString(this.opCode)).replace(' ', '0') + " "
-                + String.format("%32s", Integer.toBinaryString(this.constant)).replace(' ', '0')
-        );
     }
 }

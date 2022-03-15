@@ -1,7 +1,6 @@
-package me.jakobkraus.slothlang.runtime;
+package me.jakobkraus.slothlang.util;
 
 import me.jakobkraus.slothlang.pagestructure.PageDirectory;
-import me.jakobkraus.slothlang.util.Stack;
 
 public class ExecutionContext {
 
@@ -9,12 +8,14 @@ public class ExecutionContext {
     private final Stack callStack;
     private final InstructionPointer instructionPointer;
     private final PageDirectory pageDirectory;
+    private byte[] code;
 
-    public ExecutionContext(Stack instructionStack, Stack callStack, InstructionPointer instructionPointer, PageDirectory pageDirectory) {
+    public ExecutionContext(Stack instructionStack, Stack callStack, InstructionPointer instructionPointer, PageDirectory pageDirectory, byte[] code) {
         this.instructionStack = instructionStack;
         this.callStack = callStack;
         this.instructionPointer = instructionPointer;
         this.pageDirectory = pageDirectory;
+        this.code = code;
     }
 
     public Stack getInstructionStack() {
@@ -31,5 +32,9 @@ public class ExecutionContext {
 
     public PageDirectory getPageDirectory() {
         return this.pageDirectory;
+    }
+
+    public byte[] getCode() {
+        return this.code;
     }
 }

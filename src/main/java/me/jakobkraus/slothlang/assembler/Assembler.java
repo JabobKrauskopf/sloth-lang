@@ -1,7 +1,9 @@
 package me.jakobkraus.slothlang.assembler;
 
-import me.jakobkraus.slothlang.instructions.InstructionStructure;
+import me.jakobkraus.slothlang.architecture.InstructionType;
+import me.jakobkraus.slothlang.instructions.*;
 import me.jakobkraus.slothlang.util.FileHelper;
+import me.jakobkraus.slothlang.util.SerializationContext;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
@@ -13,7 +15,6 @@ import java.util.regex.Pattern;
 
 public class Assembler {
 
-    private final InstructionStructure struct = new InstructionStructure();
     private String code = "";
 
     public String cleanCode(String code) {
@@ -77,20 +78,44 @@ public class Assembler {
         this.code = code;
     }
 
-    public void parse() {
-        this.struct.parse(this.code);
-    }
-
     public void saveSerialization(String filepath) throws IOException {
         ByteArrayOutputStream serialization = new ByteArrayOutputStream();
         DataOutputStream outputStream = new DataOutputStream(serialization);
 
-        this.struct.serialize(outputStream);
-        FileHelper.saveBinary(filepath, serialization);
-    }
+        SerializationContext context = new SerializationContext(outputStream);
 
-    public void printInstructions() {
-        struct.print();
+        for (String line : this.code.split("\n")) {
+            String[] instructions = line.split(" ", 2);
+            InstructionType instructionType = InstructionType.getInstructionTypeFromString(instructions[0]);
+
+            switch (instructionType) {
+                case CSI -> Csi.serialize(context, instructions[1]);
+                case ADD -> Add.serialize(context);
+                case SUB -> Sub.serialize(context);
+                case SQR -> Sqr.serialize(context);
+                case J -> J.serialize(context, instructions[1]);
+                case JE -> Je.serialize(context, instructions[1]);
+                case JNE -> Jne.serialize(context, instructions[1]);
+                case CALL -> Call.serialize(context, instructions[1]);
+                case RETURN -> Return.serialize(context);
+                case AND -> And.serialize(context);
+                case OR -> Or.serialize(context);
+                case XOR -> Xor.serialize(context);
+                case SLL -> Sll.serialize(context, instructions[1]);
+                case SRL -> Srl.serialize(context, instructions[1]);
+                case EQ -> Eq.serialize(context);
+                case EQI -> Eqi.serialize(context, instructions[1]);
+                case COPY -> Copy.serialize(context);
+                case DROP -> Drop.serialize(context);
+                case SWAP -> Swap.serialize(context);
+                case ROT -> Rot.serialize(context, instructions[1]);
+                case TUCK -> Tuck.serialize(context, instructions[1]);
+                case SW -> Sw.serialize(context, instructions[1]);
+                case LW -> Lw.serialize(context, instructions[1]);
+            }
+        }
+
+        FileHelper.saveBinary(filepath, serialization);
     }
 
     public void print() {

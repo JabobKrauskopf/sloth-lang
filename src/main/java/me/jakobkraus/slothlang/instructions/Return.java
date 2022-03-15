@@ -1,32 +1,22 @@
 package me.jakobkraus.slothlang.instructions;
 
 import me.jakobkraus.slothlang.architecture.InstructionType;
-import me.jakobkraus.slothlang.runtime.ExecutionContext;
+import me.jakobkraus.slothlang.util.ExecutionContext;
+import me.jakobkraus.slothlang.util.SerializationContext;
 
-import java.io.DataOutputStream;
 import java.io.IOException;
 
-public class Return implements Instruction {
+public class Return {
 
-    private final byte opCode = InstructionType.RETURN.getOpCode();
+    private static final byte opCode = InstructionType.RETURN.getOpCode();
 
-    @Override
-    public void serialize(DataOutputStream outputStream) throws IOException {
-        outputStream.writeByte(opCode);
+    public static void serialize(SerializationContext context) throws IOException {
+        context.getOutputStream().writeByte(opCode);
     }
 
-    @Override
-    public void execute(ExecutionContext context) {
+    public static void execute(ExecutionContext context) {
         context.getInstructionPointer().setInstructionPointer(
                 context.getCallStack().pop()
-        );
-    }
-
-    @Override
-    public void print() {
-        System.out.println(this.opCode + " " + 0 + " | "
-                + String.format("%8s", Integer.toBinaryString(this.opCode)).replace(' ', '0') + " "
-                + String.format("%32s", Integer.toBinaryString(0)).replace(' ', '0')
         );
     }
 }

@@ -1,37 +1,33 @@
 package me.jakobkraus.slothlang.instructions;
 
 import me.jakobkraus.slothlang.architecture.InstructionType;
-import me.jakobkraus.slothlang.runtime.ExecutionContext;
+import me.jakobkraus.slothlang.util.ExecutionContext;
+import me.jakobkraus.slothlang.util.InstructionPointer;
+import me.jakobkraus.slothlang.util.SerializationContext;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-public class Csi implements Instruction {
+public class Csi {
 
-    private final byte opCode = InstructionType.CSI.getOpCode();
-    private final int constant;
+    private static final byte opCode = InstructionType.CSI.getOpCode();
 
-    public Csi(int constant) {
-        this.constant = constant;
-    }
-
-    @Override
-    public void serialize(DataOutputStream outputStream) throws IOException {
+    public static void serialize(SerializationContext context, String args) throws IOException {
+        DataOutputStream outputStream = context.getOutputStream();
         outputStream.writeByte(opCode);
-        outputStream.writeInt(constant);
+        outputStream.writeInt(Integer.parseInt(args));
     }
 
-    @Override
-    public void execute(ExecutionContext context) {
-        context.getInstructionStack().push(this.constant);
-        context.getInstructionPointer().increment(1 + InstructionType.CSI.getArgLength());
-    }
+    public static void execute(ExecutionContext context) {
+        byte[] code = context.getCode();
+        InstructionPointer instructionPointer = context.getInstructionPointer();
+        int instructionPointerValue = instructionPointer.getInstructionPointerValue();
+        int constant = (code[instructionPointerValue + 1] << 24) |
+                (code[instructionPointerValue + 2] << 16) |
+                (code[instructionPointerValue + 3] << 8) |
+                code[instructionPointerValue + 4];
 
-    @Override
-    public void print() {
-        System.out.println(this.opCode + " " + this.constant + " | "
-                + String.format("%8s", Integer.toBinaryString(this.opCode)).replace(' ', '0') + " "
-                + String.format("%32s", Integer.toBinaryString(this.constant)).replace(' ', '0')
-        );
+        context.getInstructionStack().push(constant);
+        instructionPointer.increment(1 + InstructionType.CSI.getArgLength());
     }
 }

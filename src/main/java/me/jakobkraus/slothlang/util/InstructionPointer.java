@@ -1,4 +1,4 @@
-package me.jakobkraus.slothlang.runtime;
+package me.jakobkraus.slothlang.util;
 
 public class InstructionPointer {
 

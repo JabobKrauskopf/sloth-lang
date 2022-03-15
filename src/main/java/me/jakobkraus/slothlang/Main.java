@@ -16,30 +16,21 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        assembler.parse();
         try {
             assembler.saveSerialization("example.sab");
         } catch (IOException e) {
             e.printStackTrace();
         }
-        assembler.printInstructions();
 
 
-//        System.out.println("\nStarting Runtime");
-//
-//        Runtime runtime = new Runtime();
-//        try {
-//            runtime.loadFile("example.sab");
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        try {
-//            runtime.deserialize();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        runtime.printInstructions();
-//        runtime.runAll();
-//        runtime.printInstructionStack();
+        System.out.println("\nStarting Runtime");
+        Runtime runtime = new Runtime();
+        try {
+            runtime.loadFile("example.sab");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        runtime.runAll();
+        runtime.printInstructionStack();
     }
 }

@@ -1,16 +1,16 @@
 package me.jakobkraus.slothlang.runtime;
 
-import me.jakobkraus.slothlang.instructions.InstructionStructure;
+import me.jakobkraus.slothlang.architecture.InstructionType;
+import me.jakobkraus.slothlang.instructions.*;
 import me.jakobkraus.slothlang.pagestructure.PageDirectory;
+import me.jakobkraus.slothlang.util.ExecutionContext;
 import me.jakobkraus.slothlang.util.FileHelper;
+import me.jakobkraus.slothlang.util.InstructionPointer;
 import me.jakobkraus.slothlang.util.Stack;
 
-import java.io.ByteArrayInputStream;
-import java.io.DataInputStream;
 import java.io.IOException;
 
 public class Runtime {
-    private final InstructionStructure struct = new InstructionStructure();
     private final Stack instructionStack = new Stack();
     private final Stack callStack = new Stack();
     private final InstructionPointer instructionPointer = new InstructionPointer();
@@ -19,16 +19,6 @@ public class Runtime {
 
     public void loadFile(String filepath) throws IOException {
         this.code = FileHelper.readBinary(filepath);
-    }
-
-    public void deserialize() throws IOException {
-        ByteArrayInputStream serialization = new ByteArrayInputStream(this.code);
-        DataInputStream inputStream = new DataInputStream(serialization);
-        this.struct.deserialize(inputStream);
-    }
-
-    public void printInstructions() {
-        this.struct.print();
     }
 
     public void printInstructionStack() {
@@ -44,20 +34,56 @@ public class Runtime {
     }
 
     public void runAll() {
-        this.struct.runAll(
-                new ExecutionContext(this.instructionStack, this.callStack, this.instructionPointer, this.pageDirectory)
-        );
+        ExecutionContext context = new ExecutionContext(this.instructionStack, this.callStack, this.instructionPointer, this.pageDirectory, this.code);
+
+        while (this.instructionPointer.getInstructionPointerValue() < this.code.length) {
+            this.runNext(context);
+        }
     }
 
     public void runNext(int n) {
+        ExecutionContext context = new ExecutionContext(this.instructionStack, this.callStack, this.instructionPointer, this.pageDirectory, this.code);
+
         for (int i = 0; i < n; i++) {
-            this.runNext();
+            this.runNext(context);
         }
     }
 
     public void runNext() {
-        this.struct.runNext(
-                new ExecutionContext(this.instructionStack, this.callStack, this.instructionPointer, this.pageDirectory)
+        ExecutionContext context = new ExecutionContext(this.instructionStack, this.callStack, this.instructionPointer, this.pageDirectory, this.code);
+
+        this.runNext(context);
+    }
+
+    public void runNext(ExecutionContext context) {
+        InstructionType instructionType = InstructionType.getInstructionTypeFromOpCode(
+                this.code[this.instructionPointer.getInstructionPointerValue()]
         );
+
+        switch (instructionType) {
+            case CSI -> Csi.execute(context);
+            case ADD -> Add.execute(context);
+            case SUB -> Sub.execute(context);
+            case SQR -> Sqr.execute(context);
+            case J -> J.execute(context);
+            case JE -> Je.execute(context);
+            case JNE -> Jne.execute(context);
+            case CALL -> Call.execute(context);
+            case RETURN -> Return.execute(context);
+            case AND -> And.execute(context);
+            case OR -> Or.execute(context);
+            case XOR -> Xor.execute(context);
+            case SLL -> Sll.execute(context);
+            case SRL -> Srl.execute(context);
+            case EQ -> Eq.execute(context);
+            case EQI -> Eqi.execute(context);
+            case COPY -> Copy.execute(context);
+            case DROP -> Drop.execute(context);
+            case SWAP -> Swap.execute(context);
+            case ROT -> Rot.execute(context);
+            case TUCK -> Tuck.execute(context);
+            case SW -> Sw.execute(context);
+            case LW -> Lw.execute(context);
+        }
     }
 }

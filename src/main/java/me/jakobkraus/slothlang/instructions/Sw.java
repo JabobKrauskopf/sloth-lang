@@ -1,37 +1,24 @@
 package me.jakobkraus.slothlang.instructions;
 
 import me.jakobkraus.slothlang.architecture.InstructionType;
-import me.jakobkraus.slothlang.runtime.ExecutionContext;
+import me.jakobkraus.slothlang.util.ExecutionContext;
+import me.jakobkraus.slothlang.util.SerializationContext;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-public class Sw implements Instruction {
+public class Sw {
 
-    private final byte opCode = InstructionType.SW.getOpCode();
-    private final int address;
+    private static final byte opCode = InstructionType.SW.getOpCode();
 
-    public Sw(int address) {
-        this.address = address;
-    }
-
-    @Override
-    public void serialize(DataOutputStream outputStream) throws IOException {
+    public static void serialize(SerializationContext context, String args) throws IOException {
+        DataOutputStream outputStream = context.getOutputStream();
         outputStream.writeByte(opCode);
-        outputStream.writeInt(this.address);
+        outputStream.writeInt(Integer.parseInt(args));
     }
 
-    @Override
-    public void execute(ExecutionContext context) {
-        context.getPageDirectory().storeWord(this.address, context.getInstructionStack().pop());
+    public static void execute(ExecutionContext context) {
+        // context.getPageDirectory().storeWord(this.address, context.getInstructionStack().pop());
         context.getInstructionPointer().increment(1 + InstructionType.SW.getArgLength());
-    }
-
-    @Override
-    public void print() {
-        System.out.println(this.opCode + " " + this.address + " | "
-                + String.format("%8s", Integer.toBinaryString(this.opCode)).replace(' ', '0') + " "
-                + String.format("%32s", Integer.toBinaryString(this.address)).replace(' ', '0')
-        );
     }
 }
