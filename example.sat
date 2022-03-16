@@ -1,4 +1,5 @@
 // Recursive Fibonacci
+.text
 j pass
 func fib:
     copy

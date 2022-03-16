@@ -16,9 +16,11 @@ import java.util.regex.Pattern;
 public class Assembler {
 
     private String code = "";
+    public static int HEADER_LENGTH = 14;
 
-    public String cleanCode(String code) {
+    public String cleanText(String code) {
         String[] lines = code
+                .replaceAll("^\n", "")
                 .replaceAll("\n\n+", "\n")
                 .replaceAll("(^|(?<=\n))\s+", "")
                 .split("\n");
@@ -29,7 +31,7 @@ public class Assembler {
         Map<String, Integer> labelMatches = new HashMap<>();
         Map<String, Integer> funcMatches = new HashMap<>();
 
-        int address = 0;
+        int address = Assembler.HEADER_LENGTH;
         for (String line : lines) {
             if (line.startsWith("//"))
                 continue;
@@ -71,20 +73,38 @@ public class Assembler {
     }
 
     public void loadFile(String filepath) throws IOException {
-        this.code = cleanCode(FileHelper.readFile(filepath));
+        this.code = FileHelper.readFile(filepath);
     }
 
     public void loadString(String code) {
         this.code = code;
     }
 
+    public void addHeader(int dataSize, int textSize, DataOutputStream finalOutputStream) throws IOException {
+        finalOutputStream.writeByte(117);
+        finalOutputStream.writeByte(76);
+        finalOutputStream.writeInt(dataSize);
+        finalOutputStream.writeInt(textSize);
+        finalOutputStream.writeInt(Assembler.HEADER_LENGTH + dataSize + textSize);
+    }
+
     public void saveSerialization(String filepath) throws IOException {
-        ByteArrayOutputStream serialization = new ByteArrayOutputStream();
-        DataOutputStream outputStream = new DataOutputStream(serialization);
+        ByteArrayOutputStream textSerialization = new ByteArrayOutputStream();
+        DataOutputStream textOutputStream = new DataOutputStream(textSerialization);
 
-        SerializationContext context = new SerializationContext(outputStream, "");
+        ByteArrayOutputStream dataSerialization = new ByteArrayOutputStream();
+        DataOutputStream dataOutputStream = new DataOutputStream(dataSerialization);
 
-        for (String line : this.code.split("\n")) {
+        ByteArrayOutputStream finalSerialization = new ByteArrayOutputStream();
+        DataOutputStream finalOutputStream = new DataOutputStream(finalSerialization);
+
+        SerializationContext context = new SerializationContext(textOutputStream, "");
+
+        String[] dataText = this.code.split("\\.text", 2);
+        String data = dataText[0];
+        String text = cleanText(dataText[1]);
+
+        for (String line : text.split("\n")) {
             String[] instructions = line.split(" ", 2);
             InstructionType instructionType = InstructionType.getInstructionTypeFromString(instructions[0]);
 
@@ -92,7 +112,11 @@ public class Assembler {
             instructionType.serialize(context);
         }
 
-        FileHelper.saveBinary(filepath, serialization);
+        this.addHeader(dataOutputStream.size(), textOutputStream.size(), finalOutputStream);
+        dataSerialization.writeTo(finalSerialization);
+        textSerialization.writeTo(finalSerialization);
+
+        FileHelper.saveBinary(filepath, finalSerialization);
     }
 
     public void print() {

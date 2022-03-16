@@ -8,6 +8,7 @@ import java.io.IOException;
 public class Main {
 
     public static void main(String[] args) {
+
         System.out.println("Starting Assembler");
 
         Assembler assembler = new Assembler();
@@ -30,6 +31,7 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        runtime.printInstructionPointer();
         runtime.runAll();
         runtime.printInstructionStack();
     }
