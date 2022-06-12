@@ -1,7 +1,6 @@
 package me.jakobkraus.slothlang.assembler;
 
 import me.jakobkraus.slothlang.architecture.InstructionType;
-import me.jakobkraus.slothlang.instructions.*;
 import me.jakobkraus.slothlang.util.FileHelper;
 import me.jakobkraus.slothlang.util.SerializationContext;
 
@@ -81,11 +80,23 @@ public class Assembler {
     }
 
     public void addHeader(int dataSize, int textSize, DataOutputStream finalOutputStream) throws IOException {
-        finalOutputStream.writeByte(117);
+        finalOutputStream.writeByte(73);
         finalOutputStream.writeByte(76);
         finalOutputStream.writeInt(dataSize);
         finalOutputStream.writeInt(textSize);
         finalOutputStream.writeInt(Assembler.HEADER_LENGTH + dataSize + textSize);
+    }
+
+    public void serializeText(String text, DataOutputStream textOutputStream) throws IOException {
+        SerializationContext context = new SerializationContext(textOutputStream, "");
+
+        for (String line : text.split("\n")) {
+            String[] instructions = line.split(" ", 2);
+            InstructionType instructionType = InstructionType.getInstructionTypeFromString(instructions[0]);
+
+            context.setArgs(instructionType.getInstructionLength() > 1 ? instructions[1] : "");
+            instructionType.serialize(context);
+        }
     }
 
     public void saveSerialization(String filepath) throws IOException {
@@ -98,19 +109,10 @@ public class Assembler {
         ByteArrayOutputStream finalSerialization = new ByteArrayOutputStream();
         DataOutputStream finalOutputStream = new DataOutputStream(finalSerialization);
 
-        SerializationContext context = new SerializationContext(textOutputStream, "");
-
         String[] dataText = this.code.split("\\.text", 2);
         String data = dataText[0];
-        String text = cleanText(dataText[1]);
 
-        for (String line : text.split("\n")) {
-            String[] instructions = line.split(" ", 2);
-            InstructionType instructionType = InstructionType.getInstructionTypeFromString(instructions[0]);
-
-            context.setArgs(instructionType.getInstructionLength() > 1 ? instructions[1] : "");
-            instructionType.serialize(context);
-        }
+        this.serializeText(cleanText(dataText[1]), textOutputStream);
 
         this.addHeader(dataOutputStream.size(), textOutputStream.size(), finalOutputStream);
         dataSerialization.writeTo(finalSerialization);

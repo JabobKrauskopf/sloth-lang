@@ -31,7 +31,6 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        runtime.printInstructionPointer();
         runtime.runAll();
         runtime.printInstructionStack();
     }
