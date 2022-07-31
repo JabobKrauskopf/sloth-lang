@@ -1,4 +1,6 @@
 // Recursive Fibonacci
+.data
+
 .text
 j pass
 func fib:

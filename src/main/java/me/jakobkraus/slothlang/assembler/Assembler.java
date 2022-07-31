@@ -17,12 +17,14 @@ public class Assembler {
     private String code = "";
     public static int HEADER_LENGTH = 14;
 
-    public String cleanText(String code) {
-        String[] lines = code
-                .replaceAll("^\n", "")
+    public String cleanCode(String code) {
+        return code.replaceAll("^\n", "")
                 .replaceAll("\n\n+", "\n")
-                .replaceAll("(^|(?<=\n))\s+", "")
-                .split("\n");
+                .replaceAll("(^|(?<=\n))\s+", "");
+    }
+
+    public String cleanText(String code) {
+        String[] lines = code.split("\n");
         StringBuilder cleanCode = new StringBuilder();
 
         Pattern labelPattern = Pattern.compile("(^[^:\s]+):");
@@ -72,11 +74,11 @@ public class Assembler {
     }
 
     public void loadFile(String filepath) throws IOException {
-        this.code = FileHelper.readFile(filepath);
+        this.code = this.cleanCode(FileHelper.readFile(filepath));
     }
 
     public void loadString(String code) {
-        this.code = code;
+        this.code = this.cleanCode(code);
     }
 
     public void addHeader(int dataSize, int textSize, DataOutputStream finalOutputStream) throws IOException {
